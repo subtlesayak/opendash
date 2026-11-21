@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "preview": "node scripts/preview.mjs",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit && node scripts/verify-reel-data.mjs"
   },
   "dependencies": {
     "react": "19.3.1",

@@ -20,11 +20,15 @@ export type ShowcaseReel = {
 
 type ReelSort = "views" | "creator" | "recent"
 
+function mediaUrl(siteRoot: string, path: string) {
+    return (siteRoot || "https://subtlesayak.github.io/opendash") + "/media/" + path
+}
+
 export function reelCount(value: string) {
     const normalized = value.replaceAll(",", "")
     const amount = Number.parseFloat(normalized)
-    if (normalized.endsWith("M")) return amount * 1_000_000
-    if (normalized.endsWith("K")) return amount * 1_000
+    if (normalized.endsWith("M")) return Math.round(amount * 1_000_000)
+    if (normalized.endsWith("K")) return Math.round(amount * 1_000)
     return Number.isFinite(amount) ? amount : -1
 }
 
@@ -62,9 +66,13 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
             <ul className="odp-tiles">
                 {visible.map((entry) => (
                     <li key={entry.id} className="odp-tile">
+                        <a className="odp-cover" aria-label={`Watch ${entry.title} on Instagram`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">
+                            <img src={mediaUrl(siteRoot, `reels/${entry.id}.jpg`)} alt="" width={640} height={853} loading="lazy" decoding="async" />
+                            <span className="odp-play" aria-hidden="true">▶</span>
+                            <span className="odp-cover-label" aria-hidden="true">Watch Reel ↗</span>
+                        </a>
                         <div className="odp-tile-top">
                             <time dateTime={"2026-" + entry.date}>{entry.date.startsWith("06") ? "Jun" : "Jul"} {Number(entry.date.slice(3))}, 2026</time>
-                            <a className="odp-play" aria-label={`Watch ${entry.title} on Instagram`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">▶</a>
                         </div>
                         <h3><a href={`https://www.instagram.com/reel/${entry.id}/`}>{entry.title}</a></h3>
                         <p className="odp-credit">{entry.credit.split(" × ").map((handle) => <a key={handle} href={`https://www.instagram.com/${handle.slice(1)}/`}>{handle}</a>)}</p>
@@ -77,34 +85,19 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                 ))}
             </ul>
             {visible.length < entries.length && <button className="odp-button odp-secondary odp-more" type="button" onClick={() => setLimit(entries.length)}>Show all {entries.length} Reels</button>}
-            <a className="odp-textlink" href={siteRoot + "/case-study/#response"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
+            <a className="odp-textlink" href={siteRoot + "/case-study/#reel-analysis"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
         </section>
     )
 }
 
-function RidePreview() {
+function AppPreview({ siteRoot }: { siteRoot: string }) {
     return (
         <figure className="odp-preview">
-            <div className="odp-mapstage" aria-hidden="true">
-                <div className="odp-stage-label"><span /> ROUTE PREVIEW</div>
-                <div className="odp-contours"><i /><i /><i /><i /></div>
-                <div className="odp-phone">
-                    <div className="odp-phone-top"><span className="odp-mini-mark" /> Open Dash <span className="odp-phone-menu">⋯</span></div>
-                    <div className="odp-map">
-                        <div className="odp-road odp-road-one" />
-                        <div className="odp-road odp-road-two" />
-                        <div className="odp-road odp-road-three" />
-                        <div className="odp-route" />
-                        <i className="odp-pin odp-pin-start" /><i className="odp-pin odp-pin-end" />
-                    </div>
-                    <div className="odp-route-sheet">
-                        <span>ROUTE PREVIEW</span>
-                        <strong>Sunday loop</strong>
-                        <p>84 km <span>·</span> 2 h 15 min</p>
-                    </div>
-                </div>
+            <div className="odp-appstage">
+                <img className="odp-appscreen" src={mediaUrl(siteRoot, "app/vehicles.webp")} alt="Open Dash Vehicles screen with Himalayan 450 and Guerrilla bikes and document reminders." width={1080} height={2122} decoding="async" fetchPriority="high" />
+                <img className="odp-appscreen" src={mediaUrl(siteRoot, "app/garage.webp")} alt="Open Dash Garage screen with the active bike, odometer, and service items." width={1080} height={2122} decoding="async" />
             </div>
-            <figcaption>Illustrative phone route preview.</figcaption>
+            <figcaption>Actual app screens · June 2026 build. <a href="https://www.reddit.com/r/Himalayan450/comments/1udo7em/open_dash_what_couldve_been/">View the original post ↗</a></figcaption>
         </figure>
     )
 }
@@ -141,7 +134,7 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
                             <a className="odp-button odp-secondary" href={siteRoot + "/case-study/"}>Read the case study</a>
                         </div>
                     </div>
-                    <RidePreview />
+                    <AppPreview siteRoot={siteRoot} />
                 </section>
                 <section className="odp-wrap odp-features" id="features" aria-labelledby="odp-features-title">
                     <h2 id="odp-features-title">Before and after the ride</h2>
@@ -184,8 +177,8 @@ const productStyles = `
 .odp-footer { border-block-start:1px solid var(--edge); border-block-end:0; }
 .odp-head-inner { min-height:75px; display:flex; justify-content:space-between; align-items:center; gap:10px 24px; flex-wrap:wrap; }
 .odp-brand { min-height:44px; display:inline-flex; gap:11px; align-items:center; text-decoration:none; font-size:1.17rem; font-weight:770; letter-spacing:-.04em; white-space:nowrap; }
-.odp-mark,.odp-mini-mark { position:relative; display:inline-block; flex:none; width:25px; aspect-ratio:1; border:2px solid currentColor; border-radius:50%; }
-.odp-mark::after,.odp-mini-mark::after { content:""; position:absolute; width:2px; height:9px; left:50%; top:4px; background:currentColor; transform:rotate(44deg); transform-origin:bottom center; }
+.odp-mark { position:relative; display:inline-block; flex:none; width:25px; aspect-ratio:1; border:2px solid currentColor; border-radius:50%; }
+.odp-mark::after { content:""; position:absolute; width:2px; height:9px; left:50%; top:4px; background:currentColor; transform:rotate(44deg); transform-origin:bottom center; }
 .odp-nav { display:flex; align-items:center; gap:clamp(10px,3vw,32px); flex-wrap:wrap; }
 .odp-nav a { display:inline-flex; align-items:center; min-height:44px; text-decoration:none; font-size:.9rem; font-weight:620; }
 .odp-nav a:hover,.odp-tile h3 a:hover,.odp-credit a:hover { text-decoration:underline; text-underline-offset:4px; }
@@ -202,32 +195,11 @@ const productStyles = `
 .odp .odp-secondary { color:var(--ink); background:transparent; border-color:#a7b5a7; }
 .odp-secondary:hover { background:#e8efe4; }
 .odp-preview { min-width:0; }
-.odp-mapstage { min-height:clamp(300px,39vw,450px); border-radius:20px; position:relative; overflow:hidden; display:grid; place-items:center; isolation:isolate; background:radial-gradient(ellipse at 55% 47%,#324734 0%,#202e25 53%,#131c17 100%); }
-.odp-stage-label { position:absolute; z-index:2; top:14px; left:15px; font-size:.63rem; font-weight:700; letter-spacing:.13em; color:#dbe6d8; }
-.odp-stage-label span { display:inline-block; width:6px; height:6px; background:var(--green); border-radius:50%; margin-right:6px; }
-.odp-contours { position:absolute; inset:-20%; z-index:-1; background:repeating-radial-gradient(ellipse at 65% 40%,transparent 0 19px,#d7f4d411 20px 21px,transparent 22px 33px); transform:rotate(-24deg) scaleX(1.25); }
-.odp-contours i { position:absolute; inset:28% 4%; border:1px dashed #d3efc947; border-radius:48%; transform:rotate(25deg); }
-.odp-contours i:nth-child(2) { inset:16% 10%; transform:rotate(29deg); }
-.odp-contours i:nth-child(3) { inset:9% 18%; transform:rotate(35deg); }
-.odp-phone { padding:9px; margin:30px 0 26px; width:clamp(170px,51%,240px); transform:rotate(-8deg); border-radius:27px; border:1px solid #819783; background:#101712; color:#f3f8ef; box-shadow:10px 20px 35px #061006bb; }
-.odp-phone-top { display:flex; align-items:center; gap:6px; padding:3px 4px 8px; font-size:.68rem; font-weight:750; }
-.odp-mini-mark { width:14px; border-width:1px; }
-.odp-mini-mark::after { height:5px; width:1px; top:2px; }
-.odp-phone-menu { margin-left:auto; }
-.odp-map { height:clamp(111px,19vw,205px); position:relative; overflow:hidden; border-radius:12px; background:repeating-radial-gradient(ellipse at 16% 19%,#325043 0 9px,#385f50 10px 11px,#304c41 12px 17px); }
-.odp-road { position:absolute; background:#7b9c8b; opacity:.55; height:2px; width:120%; left:-8%; transform:rotate(25deg); top:30%; }
-.odp-road-two { transform:rotate(-29deg); top:65%; }
-.odp-road-three { transform:rotate(73deg); top:46%; }
-.odp-route { position:absolute; inset:0; background:var(--green); clip-path:polygon(18% 79%,29% 51%,45% 47%,54% 32%,72% 40%,80% 21%,83% 22%,74% 44%,56% 37%,47% 51%,31% 55%,21% 81%); }
-.odp-pin { position:absolute; width:10px; height:10px; background:#fff; border:2px solid #263a2c; border-radius:50%; }
-.odp-pin-start { top:77%; left:17%; }
-.odp-pin-end { top:19%; left:79%; }
-.odp-route-sheet { padding:9px 4px 5px; display:grid; gap:1px; }
-.odp-route-sheet>span { font-size:.54rem; letter-spacing:.11em; color:#bfddaf; font-weight:740; }
-.odp-route-sheet strong { font-size:1.02rem; }
-.odp-route-sheet p { font-size:.68rem; color:#d7e1d7; font-variant-numeric:tabular-nums; }
-.odp-route-sheet p span { margin:0 5px; }
-.odp-preview figcaption { margin-top:7px; color:var(--muted); font-size:.78rem; text-align:right; }
+.odp-appstage { position:relative; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; gap:12px; padding:28px 18px 52px; border:1px solid #d6dfd0; border-radius:20px; background:radial-gradient(ellipse at 65% 30%,#f0e5e1,transparent 75%),#e2ebdc; }
+.odp-appscreen { display:block; width:100%; height:auto; border:4px solid #211b1b; border-radius:18px; box-shadow:0 16px 28px #29242122; }
+.odp-appscreen:nth-child(2) { margin-top:28px; }
+.odp-preview figcaption { margin-top:9px; color:var(--muted); font-size:.75rem; line-height:1.6; }
+.odp-preview figcaption a { text-underline-offset:3px; }
 .odp h2 { font-size:clamp(2rem,4vw,3.5rem); line-height:1; letter-spacing:-.066em; font-weight:760; text-wrap:balance; }
 .odp h3 { font-size:1.1rem; font-weight:740; line-height:1.2; letter-spacing:-.025em; }
 .odp-features { padding-block:25px 60px; }
@@ -251,10 +223,14 @@ const productStyles = `
 .odp-sort select { padding:7px 30px 7px 9px; min-height:44px; border:1px solid #a7b5a7; border-radius:6px; background:white; color:var(--ink); font:inherit; font-size:.95rem; cursor:pointer; }
 .odp .odp-reels-note { margin-top:13px; color:var(--muted); font-size:.82rem; }
 .odp .odp-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); margin:12px 0 14px; }
-.odp-tile { min-width:0; background:#fcfdf9; border:1px solid var(--edge); border-radius:9px; padding:12px 15px 15px; display:flex; flex-direction:column; }
-.odp-tile-top { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#526054; font-size:.78rem; }
-.odp-play { display:grid; place-items:center; width:44px; height:44px; color:#1e3725; background:#e6efe1; border:0; border-radius:50%; text-decoration:none; font-size:.8rem; cursor:pointer; }
-.odp-play:hover { background:#d6e7cd; }
+.odp-tile { min-width:0; background:#fcfdf9; border:1px solid var(--edge); border-radius:12px; padding:0 15px 15px; display:flex; flex-direction:column; }
+.odp-cover { position:relative; display:block; margin:0 -15px 14px; border-radius:11px 11px 0 0; overflow:hidden; background:#18221b; aspect-ratio:3/4; text-decoration:none; }
+.odp-cover img { display:block; width:100%; height:100%; object-fit:contain; }
+.odp-cover::after { content:""; position:absolute; inset:45% 0 0; background:linear-gradient(transparent,#0009); pointer-events:none; }
+.odp-cover .odp-play { position:absolute; z-index:1; top:50%; left:50%; transform:translate(-50%,-50%); display:grid; place-items:center; width:48px; height:48px; color:#fff; background:#101b13c9; border:1px solid #ffffff70; border-radius:50%; font-size:.9rem; }
+.odp-cover:hover .odp-play { background:#35593d; }
+.odp-cover-label { position:absolute; z-index:1; bottom:13px; left:15px; color:white; font-size:.76rem; font-weight:700; }
+.odp-tile-top { display:flex; align-items:center; gap:8px; color:#526054; font-size:.78rem; }
 .odp-tile h3 { margin:4px 0; }
 .odp-tile h3 a { text-decoration:none; }
 .odp-credit { display:flex; flex-wrap:wrap; align-items:center; column-gap:10px; font-size:.82rem; overflow-wrap:anywhere; }
@@ -272,7 +248,7 @@ const productStyles = `
     .odp-head-inner { min-height:62px; padding-block:5px; gap:0 13px; }
     .odp-hero,.odp-history-inner { grid-template-columns:minmax(0,1fr); }
     .odp-hero { padding-bottom:30px; }
-    .odp-mapstage { min-height:320px; }
+    .odp-appstage { max-width:460px; margin-inline:auto; padding:22px 16px 46px; }
 }
 @media (max-width:430px) {
     .odp h1 { font-size:clamp(2.7rem,12vw,3.4rem); }

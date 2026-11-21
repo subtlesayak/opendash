@@ -26,6 +26,7 @@ const publicSources = {
     riders: "https://www.reddit.com/r/Himalayan450/comments/1wqhztk/opendash_old_version/",
     wallpaperReel: "https://www.instagram.com/reel/DZ9sShoIERo/",
     instagram: "https://www.instagram.com/open.dash/",
+    creatorAccount: "https://subtlesayak.github.io/articles.html#First%20Article",
     archive: "https://github.com/cotton1234/tripper",
     trends: "https://trends.google.com/trends/explore?date=2025-11-16%202026-11-16&q=OpenDash%2CTripper%20Dash",
     trendsMethod: "https://support.google.com/trends/answer/4365533",
@@ -124,7 +125,7 @@ const reels = [
 
 // Profile, shortcode, post date (IST), title, likes, comments, views, sampled comments, latest comment (UTC).
 const repostEvidence = [
-    ["thulasiram.basha","DZ7USzRpoW_","06-23","Custom wallpaper on Royal Enfield dashboards","79.5K","","2.3M","0",""],
+    ["thulasiram.basha","DZ7USzRpoW_","06-23","Custom wallpaper on Royal Enfield dashboards","79.4K","","2.3M","0",""],
     ["rideonraja","DZ998XLTBTj","06-24","Full Open Dash tutorial","2.4K","4.1K","95.1K","15","09-06"],
     ["thegrrlife","DZ9sShoIERo","06-24","Guerrilla 450 wallpaper tutorial","61.5K","3K","1.1M","15","08-30"],
     ["thegrrlife","DZ-Bp3TI1AX","06-24","Guerrilla 450 community wallpaper showcase","2.8K","279","64.6K","15","09-17"],
@@ -181,8 +182,6 @@ const featuredViews: Record<string, string> = {
     DaBJApAqSMt: "7,608",
     DaBOnTEzjJQ: "1,697",
 }
-
-const launchCohorts = [["Jun 23–27", 36], ["Jun 28–Jul 4", 8], ["Jul 5–16", 2]] as const
 
 // All other weeks in this Google Trends snapshot displayed zero for both terms.
 const searchWeeks = [
@@ -288,10 +287,14 @@ interface OpenDashLandingPageProps {
 }
 
 const coveredReels = new Map(reels.map((reel) => [reel.href.split("/reel/")[1].split("/")[0], reel]))
+const verifiedCollaborationCredits: Record<string, string> = {
+    DZ7USzRpoW_: "@thulasiram.basha × @drstupidity21 × @subtlesayak × @_rider_1179",
+    "DZ-yySEOSOM": "@lorinhosobreduasrodas1 × @thulasiram.basha",
+}
 const repostIds = new Set<string>(repostEvidence.map(([, id]) => id))
 const showcaseReels: ShowcaseReel[] = [
     ...repostEvidence.map(([creator, id, date, title, likes, comments, views]) => {
-        const credit = coveredReels.get(id)?.credit ?? (id === "DZ-yySEOSOM" ? "@lorinhosobreduasrodas1 × @thulasiram.basha" : "@" + creator)
+        const credit = coveredReels.get(id)?.credit ?? verifiedCollaborationCredits[id] ?? "@" + creator
         return { id, original: creator, date, title, credit, likes, comments, views }
     }),
     ...Array.from(coveredReels.entries()).filter(([id]) => !repostIds.has(id)).map(([id, reel]) => ({
@@ -341,57 +344,99 @@ function RedditResponse() {
     )
 }
 
-function RepostArchive({ siteRoot }: { siteRoot: string }) {
-    const repostsWithViews = showcaseReels.filter((reel) => repostIds.has(reel.id) && reel.views)
-    const topViews = [...repostsWithViews].sort((a, b) => reelCount(b.views) - reelCount(a.views)).slice(0, 5)
-    const maxViews = reelCount(topViews[0].views)
-    const knownLikes = repostEvidence.map((entry) => entry[4]).filter(Boolean).map(reelCount).sort((a, b) => b - a)
-    const likesTotal = knownLikes.reduce((total, count) => total + count, 0)
-    const topLikesShare = Math.round((knownLikes[0] + knownLikes[1]) / likesTotal * 100)
+const formatMetric = (value: number, digits = 1) => new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: digits }).format(value)
+const viewRankedReels = [...showcaseReels].sort((a, b) => reelCount(b.views) - reelCount(a.views))
+const allViewCounts = viewRankedReels.map((reel) => reelCount(reel.views))
+const totalReelViews = allViewCounts.reduce((total, value) => total + value, 0)
+const medianReelViews = (allViewCounts[Math.floor((allViewCounts.length - 1) / 2)] + allViewCounts[Math.floor(allViewCounts.length / 2)]) / 2
+const knownReelLikes = showcaseReels.filter((reel) => reel.likes)
+const knownReelComments = showcaseReels.filter((reel) => reel.comments)
+const totalReelLikes = knownReelLikes.reduce((total, reel) => total + reelCount(reel.likes), 0)
+const totalReelComments = knownReelComments.reduce((total, reel) => total + reelCount(reel.comments), 0)
+const postingAccounts = new Set(showcaseReels.map((reel) => reel.original)).size
+const launchCohorts = [
+    { label: "Jun 23–27", start: "06-23", end: "06-27" },
+    { label: "Jun 28–Jul 4", start: "06-28", end: "07-04" },
+    { label: "Jul 5–16", start: "07-05", end: "07-16" },
+].map((cohort) => ({ ...cohort, count: showcaseReels.filter((reel) => reel.date >= cohort.start && reel.date <= cohort.end).length }))
+const viewGroups = [
+    { label: "Top 2 Reels", count: allViewCounts.slice(0, 2).reduce((sum, value) => sum + value, 0) },
+    { label: "Next 3 Reels", count: allViewCounts.slice(2, 5).reduce((sum, value) => sum + value, 0) },
+    { label: "Other " + (showcaseReels.length - 5) + " Reels", count: allViewCounts.slice(5).reduce((sum, value) => sum + value, 0) },
+]
+const commentSamples = new Map(repostEvidence.map((entry) => [entry[1] as string, { count: Number(entry[7]), latest: entry[8] as string }]))
+const sampledComments = repostEvidence.reduce((sum, entry) => sum + Number(entry[7]), 0)
+const sampledReels = repostEvidence.filter((entry) => Number(entry[7]) > 0).length
+const novemberSampledReels = repostEvidence.filter((entry) => entry[8].startsWith("11-")).length
+
+function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
+    const maxViews = allViewCounts[0]
     return (
-        <div className="odc-repost-archive">
-            <h3 className="odc-evidence-heading">The creators who carried it</h3>
-            <p>Thanks to the riders who filmed their dashboards, made tutorials, and answered questions. Their Reels turned a small wallpaper feature into something other riders could see and try. Each entry links to the Reel and its creator’s profile.</p>
+        <div className="odc-repost-archive" id="reel-analysis">
+            <h3 className="odc-evidence-heading">A launch burst, with questions months later</h3>
+            <p>The full archive contains <strong>{showcaseReels.length} related Reels from {postingAccounts} posting accounts</strong>. Wallpaper customization led the two most-viewed clips. Later videos demonstrated screen-off navigation, responded to the public scope change, and explored rebuilding the removed dashboard feature.</p>
+            <dl className="odc-stats" aria-label="All 48 Instagram Reels, November 16–21, 2026 snapshot">
+                <div><dt>Cumulative views, about</dt><dd>{formatMetric(totalReelViews, 2)}</dd></div>
+                <div><dt>Median views per Reel, about</dt><dd>{formatMetric(medianReelViews)}</dd></div>
+                <div><dt>Posted in the first five days</dt><dd>{launchCohorts[0].count}/{showcaseReels.length}</dd></div>
+            </dl>
+            <p className="odc-caption">All 48 have a verified view counter. Instagram rounds larger values, so totals and shares are approximate. Views can include repeat plays and overlapping audiences.</p>
             <figure className="odc-chart">
-                <figcaption>When the reposted Reels were published</figcaption>
-                <ul className="odc-cohorts">{launchCohorts.map(([period, count]) => (
-                    <li key={period}><span>{period}</span><span className="odc-bar" aria-hidden="true"><span style={{ width: (count / 36) * 100 + "%" }} /></span><strong>{count}</strong></li>
+                <figcaption>Most posts arrived in five days</figcaption>
+                <ul className="odc-cohorts">{launchCohorts.map(({ label, count }) => (
+                    <li key={label}><span>{label}</span><span className="odc-bar" aria-hidden="true"><span style={{ width: (count / launchCohorts[0].count) * 100 + "%" }} /></span><strong>{count}</strong></li>
                 ))}</ul>
-                <p className="odc-caption">36 of {repostEvidence.length} related Reels were published June 23–27. This is the posting pattern in the project’s curated Reposts grid.</p>
+                <p className="odc-caption">{launchCohorts[0].count} of {showcaseReels.length} Reels ({Math.round(launchCohorts[0].count / showcaseReels.length * 100)}%) were posted June 23–27. These bars count posts in the labelled intervals; they do not measure when the views happened.</p>
+            </figure>
+            <figure className="odc-chart odc-view-share">
+                <figcaption>Two Reels account for most of the views</figcaption>
+                <ul>{viewGroups.map(({ label, count }) => (
+                    <li key={label}><span>{label}<small>About {formatMetric(count, 2)} views</small></span><span className="odc-bar" aria-hidden="true"><span style={{ width: count / totalReelViews * 100 + "%" }} /></span><strong>{(count / totalReelViews * 100).toFixed(1)}%</strong></li>
+                ))}</ul>
+                <p className="odc-caption">Share of cumulative views across all 48 Reels, on a 0–100% scale. The top two are the wallpaper clips by @thulasiram.basha and @thegrrlife.</p>
             </figure>
             <figure className="odc-chart odc-reel-views">
-                <figcaption>Most-viewed Reels with a verified counter</figcaption>
-                <ul>{topViews.map(({ id, original, views }) => (
+                <figcaption>The eight most-viewed Reels</figcaption>
+                <ul>{viewRankedReels.slice(0, 8).map(({ id, original, views }) => (
                     <li key={id}>
                         <a href={"https://www.instagram.com/reel/" + id + "/"}>@{original}</a>
                         <span className="odc-bar" aria-hidden="true"><span style={{ width: (reelCount(views) / maxViews) * 100 + "%" }} /></span>
                         <strong>{views}</strong>
                     </li>
                 ))}</ul>
-                <p className="odc-caption">Cumulative views checked November 16–21, 2026. Instagram displayed verifiable view counts for {repostsWithViews.length} of the {repostEvidence.length} related reposts.</p>
             </figure>
-            <p>The two most-viewed Reels in the verified set both showed wallpaper customization. Together they also account for about <strong>{topLikesShare}%</strong> of the visible likes across the {knownLikes.length} related Reels with a like count. Screen-off navigation drew <strong>377K views</strong>, and a later creator response to the scope change drew <strong>294K</strong>.</p>
-            <p className="odc-caption">The November 21 rescan found 49 reposted items, comprising 48 Reels and one photo carousel. The analysis covers {repostEvidence.length} related Reels from that tab. The homepage showcase also includes two relevant launch clips verified outside the Reposts grid.</p>
-            <p>Of <strong>441 visible comments</strong> sampled across 41 Reels, <strong>171</strong> mentioned links, APKs, or downloads and <strong>12</strong> matched setup or connection terms. Five Reels had a dated November comment in the sample. Instagram’s comment ordering can hide newer replies, and these snapshots give no impressions history.</p>
+            <p>The top five clips contribute about <strong>{(allViewCounts.slice(0, 5).reduce((sum, value) => sum + value, 0) / totalReelViews * 100).toFixed(1)}%</strong> of the views. A typical Reel in this set sits much closer to the <strong>{formatMetric(medianReelViews)}</strong> median than to the million-view outliers. The spread documents both a few widely seen clips and many smaller demonstrations.</p>
+            <p>The recorded counters also total about <strong>{formatMetric(totalReelLikes)} likes across {knownReelLikes.length} Reels</strong> and <strong>{formatMetric(totalReelComments)} comments across {knownReelComments.length} Reels</strong>. Missing counters remain unknown. These counts cannot establish app installs or successful setups.</p>
+            <h4 className="odc-evidence-heading">What people were asking</h4>
+            <p>Of <strong>{sampledComments} visible comments sampled across {sampledReels} of the 48 Reels</strong>, <strong>171 ({(171 / sampledComments * 100).toFixed(1)}%)</strong> matched link, APK, or download terms, while <strong>12 ({(12 / sampledComments * 100).toFixed(1)}%)</strong> matched setup or connection terms. Keyword groups may overlap. This supports ongoing interest in finding the app; it does not measure satisfaction or conversion.</p>
+            <p><strong>{novemberSampledReels} sampled Reels had a dated November comment</strong>, with the latest captured date on November 15. All 48 clips in this archive were published by July 16, so some discussion continued months after posting. Instagram’s comment ordering means a missing recent comment cannot establish that a Reel is inactive. A single cumulative snapshot cannot show view growth over time, impressions, or daily active riders.</p>
+            <p>Thanks to the creators who filmed their dashboards, made tutorials, and answered questions. Every entry below links to its Reel and the credited creator profiles.</p>
             <details className="odc-trend-details">
-                <summary>Browse all {repostEvidence.length} Reels and creator credits</summary>
-                <p className="odc-caption">Counts were checked November 16–21, 2026. Views come from matching View Count badges. A dash means the count wasn’t visible or couldn’t be matched. Posted dates use India time. Latest sampled comment dates use UTC.</p>
+                <summary>Browse all {showcaseReels.length} Reels, counts, and creator credits</summary>
+                <p className="odc-caption">Public counters checked November 16–21, 2026. Posted dates use India time; sampled comment dates use UTC. Comment samples cover 41 Reels and may omit newer replies.</p>
                 <ul className="odc-repost-list">
-                    {repostEvidence.map(([creator, id, date, title, likes, comments, views, sample, latest]) => (
-                        <li key={id}>
+                    {viewRankedReels.map(({ id, date, title, credit, likes, comments, views }) => {
+                        const sample = commentSamples.get(id)
+                        return <li key={id}>
                             <div>
                                 <SourceLink href={"https://www.instagram.com/reel/" + id + "/"}>{title}</SourceLink>
-                                <p className="odc-repost-credit"><CreatorCredits labels={showcaseReels.find((reel) => reel.id === id)?.credit ?? "@" + creator} /> <span aria-hidden="true">·</span> <time dateTime={"2026-" + date}>{date.replace("-", "/")}/2026</time></p>
+                                <p className="odc-repost-credit"><CreatorCredits labels={credit} /> <span aria-hidden="true">·</span> <time dateTime={"2026-" + date}>{date.replace("-", "/")}/2026</time></p>
                             </div>
                             <dl>
                                 <div><dt>Likes</dt><dd>{likes || "—"}</dd></div>
                                 <div><dt>Comments</dt><dd>{comments || "—"}</dd></div>
                                 <div><dt>Views</dt><dd>{views || "—"}</dd></div>
                             </dl>
-                            <p className="odc-caption">{sample === "0" ? "No dated comment visible in the sample." : sample + " sampled · latest " + latest.replace("-", "/") + "/2026"}</p>
+                            <p className="odc-caption">{sample?.count ? sample.count + " comments sampled · latest " + sample.latest.replace("-", "/") + "/2026" : "No comment sample captured."}{!repostIds.has(id) && " Verified outside the Reposts grid."}</p>
                         </li>
-                    ))}
+                    })}
                 </ul>
+            </details>
+            <details className="odc-trend-details">
+                <summary>Coverage and source data</summary>
+                <p>The November 21 Reposts rescan found 49 items: 48 Reels and one photo carousel. Two unrelated Reels and the carousel are excluded. The analysis includes the remaining 46 Reels plus two relevant launch clips verified outside Reposts, giving 48 distinct related Reels. This is a curated archive rather than a census of all Open Dash posts on Instagram.</p>
+                <p>Counts were collected November 16–21 and include rounded public counters. The comment sample is non-random and cannot represent everyone who watched. Comparisons use the same full set of 48 Reels; missing likes or comments are not treated as zero.</p>
+                <SourceLink href={(siteRoot || "https://subtlesayak.github.io/opendash") + "/data/reels.json"}>Inspect the 48-Reel dataset</SourceLink>
             </details>
             <div className="odc-links">
                 <SourceLink href={siteRoot + "/#reels"}>Browse and sort the Reels showcase</SourceLink>
@@ -509,7 +554,9 @@ export default function OpenDashLandingPage({ style, caseStudy = false, siteRoot
                             <p>That was the reason I built the wallpaper feature. Navigation raised a separate question. If the phone stayed busy displaying the map, I couldn’t put its screen to sleep. Heat, battery use, and lag made me want to try a different approach.</p>
                             <p>NorthStar showed how to render maps off-screen, building on work from better-dash. I used that foundation to explore which other tools belonged with navigation. The June introduction put ride history, expenses, and maintenance into the same workflow and asked riders to try the app on their own equipment.</p>
                             <p>I approached it as a UX developer. Wallpapers, a Material 3 interface, and keeping ride information together mattered to me. It began around my own use, and I said openly that I didn’t yet know whether it would behave the same way on everyone’s phone and dash.</p>
+                            <p>For the personal story behind those choices, my article traces the move from a NorthStar redesign to Open Dash, the image-fitting problem that led to Fit Height, and what I learned building with ChatGPT.</p>
                             <div className="odc-links">
+                                <SourceLink href={publicSources.creatorAccount}>Read the creator’s account</SourceLink>
                                 <SourceLink href={publicSources.introduction}>Project introduction</SourceLink>
                                 <SourceLink href={publicSources.notice}>Project attribution</SourceLink>
                             </div>
@@ -588,7 +635,7 @@ export default function OpenDashLandingPage({ style, caseStudy = false, siteRoot
                             </div>
                             <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16–21, 2026. Instagram rounds larger totals.</p>
                             <SourceLink href={publicSources.instagram}>Browse the Open Dash Instagram profile</SourceLink>
-                            <RepostArchive siteRoot={siteRoot} />
+                            <ReelTrendAnalysis siteRoot={siteRoot} />
                             <dl className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">
                                 <div><dt>APK downloads</dt><dd>3,151</dd></div>
                                 <div><dt>Repository stars</dt><dd>82</dd></div>
@@ -771,6 +818,8 @@ const styles = `
 .odc-reel-counts strong { color: var(--gold); }
 .odc-repost-archive { margin-block-start: 28px; }
 .odc-repost-archive .odc-cohorts li { grid-template-columns: minmax(5.8rem, auto) minmax(0, 1fr) 2ch; }
+.odc-view-share li { grid-template-columns:minmax(0,8rem) minmax(1.8rem,1fr) 5ch; }
+.odc-view-share li small { display:block; color:var(--muted); font-size:.72rem; margin-top:3px; }
 .odc-reel-views li { grid-template-columns: minmax(0, 10.25rem) minmax(1.8rem, 1fr) 5ch; }
 .odc-reel-views li a { display: inline-flex; align-items: center; min-height: 44px; overflow-wrap: anywhere; }
 .odc-reddit-chart li { grid-template-columns: minmax(0, 10rem) minmax(1.8rem, 1fr) 5ch; }

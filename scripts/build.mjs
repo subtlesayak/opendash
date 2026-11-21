@@ -1,5 +1,5 @@
 import { build } from "esbuild"
-import { mkdir, readdir, unlink, writeFile } from "node:fs/promises"
+import { cp, mkdir, readdir, unlink, writeFile } from "node:fs/promises"
 import { basename, resolve } from "node:path"
 import { pathToFileURL } from "node:url"
 
@@ -13,6 +13,7 @@ const sharedOptions = {
 }
 
 await mkdir("dist/assets", { recursive: true })
+await cp("public", "dist", { recursive: true })
 await mkdir(".build", { recursive: true })
 const clientBuild = await build({
     ...sharedOptions,

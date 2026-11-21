@@ -4,6 +4,8 @@ dist/
 *.log
 *.jpg
 *.png
+!public/media/**/*.jpg
+!public/media/**/*.png
 Open Dash case study evidence review.md
 Open Dash public activity 2025-11-16 to 2026-11-16.md
 research/

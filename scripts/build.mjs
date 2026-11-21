@@ -47,6 +47,7 @@ for (const name of await readdir(assetDirectory)) {
 }
 
 const pages = [
+    { path: "reels/", title: "Open Dash | Rider showcase", description: "Watch and sort the Open Dash rider archive, with original Reels and creator credits.", caseStudy: false, reelsPage: true },
     { path: "", title: "Open Dash | Android motorcycle app", description: "Preview routes, track rides, and manage your motorcycles with the open-source Open Dash Android project.", caseStudy: false },
     { path: "case-study/", title: "Open Dash | Case study", description: "How Open Dash began on the Royal Enfield Tripper Dash, what builds through v1.3.5 showed, and how riders responded.", caseStudy: true },
 ]
@@ -57,7 +58,7 @@ for (const page of pages) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f6f8f3">
+<meta name="theme-color" content="#ffffff">
 <title>${page.title}</title>
 <meta name="description" content="${page.description}">
 <link rel="canonical" href="${url}">
@@ -66,10 +67,10 @@ for (const page of pages) {
 <meta property="og:description" content="${page.description}">
 <meta property="og:url" content="${url}">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23f6f8f3' stroke='%2315241a' stroke-width='2'/%3E%3Cpath d='m16 16 6-7' stroke='%2315241a' stroke-width='2'/%3E%3C/svg%3E">
-<style>html{scroll-behavior:smooth}body{margin:0;background:#f6f8f3}button,select{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
+<style>html{scroll-behavior:smooth}body{margin:0;background:#ffffff}button,select{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
 </head>
 <body>
-<div id="root" data-page="${page.caseStudy ? "case-study" : "product"}">${render(page.caseStudy)}</div>
+<div id="root" data-page="${page.caseStudy ? "case-study" : page.reelsPage ? "reels" : "product"}">${render(page.caseStudy, page.reelsPage ?? false)}</div>
 <script type="module" src="${siteRoot}/assets/${clientFile}"></script>
 </body>
 </html>`
@@ -79,4 +80,4 @@ for (const page of pages) {
 await writeFile("dist/.nojekyll", "")
 await writeFile("dist/sitemap.xml", `<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map((page) => `<url><loc>${origin}${siteRoot}/${page.path}</loc></url>`).join("")}</urlset>`)
-console.log("Built the product showcase and case study for /opendash/.")
+console.log("Built the editorial homepage, rider showcase and case study for /opendash/.")

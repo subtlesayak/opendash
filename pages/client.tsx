@@ -5,4 +5,4 @@ import OpenDashLandingPage from "../OpenDashCaseStudy"
 const root = document.getElementById("root")
 if (!root) throw new Error("The page root is missing.")
 
-hydrateRoot(root, <OpenDashLandingPage caseStudy={root.dataset.page === "case-study"} siteRoot="/opendash" />)
+hydrateRoot(root, <OpenDashLandingPage caseStudy={root.dataset.page === "case-study"} reelsPage={root.dataset.page === "reels"} siteRoot="/opendash" />)

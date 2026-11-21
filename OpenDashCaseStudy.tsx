@@ -283,6 +283,7 @@ const versions = [
 interface OpenDashLandingPageProps {
     style?: React.CSSProperties
     caseStudy?: boolean
+    reelsPage?: boolean
     siteRoot?: string
 }
 
@@ -439,7 +440,7 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
                 <SourceLink href={(siteRoot || "https://subtlesayak.github.io/opendash") + "/data/reels.json"}>Inspect the 48-Reel dataset</SourceLink>
             </details>
             <div className="odc-links">
-                <SourceLink href={siteRoot + "/#reels"}>Browse and sort the Reels showcase</SourceLink>
+                <SourceLink href={siteRoot + "/reels/"}>Browse and sort the Reels showcase</SourceLink>
                 <SourceLink href="https://www.instagram.com/open.dash/reposts/">Open the project’s Instagram Reposts</SourceLink>
             </div>
         </div>
@@ -498,9 +499,9 @@ function SearchInterest() {
  * @framerIntrinsicWidth 1200
  * @framerIntrinsicHeight 5400
  */
-export default function OpenDashLandingPage({ style, caseStudy = false, siteRoot = "" }: OpenDashLandingPageProps) {
+export default function OpenDashLandingPage({ style, caseStudy = false, reelsPage = false, siteRoot = "" }: OpenDashLandingPageProps) {
     if (!caseStudy) {
-        return <ProductPage style={style} entries={showcaseReels} repository={publicSources.repo} release={publicSources.release} siteRoot={siteRoot} />
+        return <ProductPage reelsPage={reelsPage} style={style} entries={showcaseReels} repository={publicSources.repo} release={publicSources.release} siteRoot={siteRoot} />
     }
     return (
         <div className="odc" style={style}>
@@ -509,12 +510,11 @@ export default function OpenDashLandingPage({ style, caseStudy = false, siteRoot
             <header className="odc-header" id="top">
                 <div className="odc-wrap odc-header-inner">
                     <a className="odc-brand" href={siteRoot + "/"}>
-                        <span className="odc-mark" aria-hidden="true" />
-                        Open Dash
+                        Open Dash.
                     </a>
                     <nav className="odc-header-nav" aria-label="Main navigation">
-                        <a className="odc-header-link" href={siteRoot + "/"}>Product</a>
-                        <a className="odc-header-link" href={siteRoot + "/#reels"}>Reels</a>
+                        <a className="odc-header-link" href={siteRoot + "/"}>Home</a>
+                        <a className="odc-header-link" href={siteRoot + "/reels/"}>Rider showcase</a>
                         <a className="odc-header-link" href={siteRoot + "/case-study/"} aria-current="page">Case study</a>
                     </nav>
                 </div>
@@ -689,8 +689,8 @@ addPropertyControls(OpenDashLandingPage, {
 
 const styles = `
 .odc {
-    --base: #f6f8f3;
-    --panel: #fcfdf9;
+    --base: #fff;
+    --panel: #fff;
     --edge: #d4dcd4;
     --ink: #101412;
     --muted: #526054;
@@ -698,7 +698,7 @@ const styles = `
     --teal: #2c695d;
     background: var(--base);
     color: var(--ink);
-    font-family: "Geist", "Inter", system-ui, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 17px;
     line-height: 1.65;
     position: relative;
@@ -711,13 +711,13 @@ const styles = `
 .odc p { margin: 0; }
 .odc h1, .odc h2, .odc h3 { margin: 0; text-wrap: balance; }
 .odc-wrap { width: min(1160px, 100%); margin-inline: auto; padding-inline: clamp(20px, 4vw, 40px); }
-.odc-header, .odc-footer { border-block-end: 1px solid var(--edge); }
-.odc-header-inner { min-height: 72px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 16px; padding-block: 8px; }
+.odc-footer { border-block-start: 1px solid var(--edge); }
+.odc-header-inner { min-height: 145px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 16px; padding-block: 8px; }
 .odc-header-nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 18px; }
 .odc-header-nav a { min-height: 44px; display: inline-flex; align-items: center; }
 .odc-header-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; }
 .odc-brand, .odc-header-link, .odc-footer a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; }
-.odc-brand { font-weight: 750; text-decoration: none; white-space: nowrap; flex: none; }
+.odc-brand { font-size:clamp(40px,6vw,72px);letter-spacing:-.06em;line-height:1.1;font-weight: 800; text-decoration: none; white-space: nowrap; flex: none; }
 .odc-mark { position: relative; width: 25px; height: 25px; border: 2px solid currentColor; border-radius: 50%; }
 .odc-mark::after { content: ""; position: absolute; width: 2px; height: 9px; left: 50%; top: 4px; background: currentColor; transform: rotate(44deg); transform-origin: bottom center; }
 .odc-header-link, .odc-footer a { color: var(--muted); font-size: .875rem; font-weight: 600; }
@@ -732,7 +732,7 @@ const styles = `
 .odc a.odc-primary:hover { background: var(--gold); text-decoration: underline; }
 .odc-hero-figure, .odc-chart { margin: 0; min-width: 0; }
 .odc-instrument {
-    background: radial-gradient(ellipse at 94% -8%, #dde8d7 0%, transparent 66%), var(--panel);
+    background: #e9edef;
     border: 1px solid var(--edge);
     border-radius: 18px;
     padding: clamp(16px, 3vw, 30px);
@@ -780,7 +780,7 @@ const styles = `
 .odc-chart li { display: grid; grid-template-columns: 3em minmax(0, 1fr) 2ch; gap: 10px; align-items: center; font-size: .875rem; font-variant-numeric: tabular-nums; }
 .odc-bar { height: 10px; background: #dce7d7; border-radius: 6px; }
 .odc-bar span { display: block; height: 100%; background: var(--teal); border-radius: inherit; }
-.odc-trends { background: linear-gradient(150deg, #e7efe0 0%, var(--panel) 72%); }
+.odc-trends { background: #f5f7f8; }
 .odc-trends-heading { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 14px; }
 .odc-trends-heading #odc-trend-title { font-size: 1.25rem; }
 .odc-trends-heading .odc-caption { margin-block-start: 3px; font-weight: 400; }

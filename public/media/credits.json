@@ -493,5 +493,18 @@
   "appScreenshots": {
     "build": "June 2026 public build",
     "source": "https://www.reddit.com/r/Himalayan450/comments/1udo7em/open_dash_what_couldve_been/"
-  }
+  },
+  "appVisualizations": [
+    {
+      "file": "app/editorial-hero.webp",
+      "type": "AI-generated product visualization",
+      "references": [
+        "app/vehicles.webp",
+        "app/garage.webp"
+      ],
+      "source": "https://www.reddit.com/r/Himalayan450/comments/1udo7em/open_dash_what_couldve_been/",
+      "notes": "Generated phone presentation based on the June 2026 public app screens. Original screenshots remain linked on the website.",
+      "sha256": "fc79d50ca7dcdd60f209e22172fef5551ab7d2a81b26203f01329449e18b508a"
+    }
+  ]
 }

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.build/
+*.log
+*.jpg
+*.png
+Open Dash case study evidence review.md
+Open Dash public activity 2025-11-16 to 2026-11-16.md
+research/

@@ -47,6 +47,7 @@ for (const name of await readdir(assetDirectory)) {
 }
 
 const pages = [
+    { path: "trends/", title: "Open Dash | Trends and community", description: "Source-linked analysis of Open Dash search interest, Reddit posts, Instagram Reels and GitHub activity.", caseStudy: false, trendsPage: true },
     { path: "reels/", title: "Open Dash | Rider showcase", description: "Watch and sort the Open Dash rider archive, with original Reels and creator credits.", caseStudy: false, reelsPage: true },
     { path: "", title: "Open Dash | Android motorcycle app", description: "Preview routes, track rides, and manage your motorcycles with the open-source Open Dash Android project.", caseStudy: false },
     { path: "case-study/", title: "Open Dash | Case study", description: "How Open Dash began on the Royal Enfield Tripper Dash, what builds through v1.3.5 showed, and how riders responded.", caseStudy: true },
@@ -70,7 +71,7 @@ for (const page of pages) {
 <style>html{scroll-behavior:smooth}body{margin:0;background:#ffffff}button,select{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
 </head>
 <body>
-<div id="root" data-page="${page.caseStudy ? "case-study" : page.reelsPage ? "reels" : "product"}">${render(page.caseStudy, page.reelsPage ?? false)}</div>
+<div id="root" data-page="${page.trendsPage ? "trends" : page.caseStudy ? "case-study" : page.reelsPage ? "reels" : "product"}">${render(page.caseStudy, page.reelsPage ?? false, page.trendsPage ?? false)}</div>
 <script type="module" src="${siteRoot}/assets/${clientFile}"></script>
 </body>
 </html>`

@@ -77,7 +77,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                 ))}
             </ul>
             {visible.length < entries.length && <button className="odp-button odp-secondary odp-more" type="button" onClick={() => setLimit(entries.length)}>Show all {entries.length} Reels</button>}
-            <a className="odp-textlink" href={siteRoot + "/case-study/#reel-analysis"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
+            <a className="odp-textlink" href={siteRoot + "/trends/#reel-analysis"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
         </section>
     )
 }
@@ -107,7 +107,7 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
         <a className="odp-skip" href="#product-main">Skip to content</a>
         <header className="odp-wrap odp-header">
             <a className="odp-brand" href={siteRoot + "/"} aria-current={reelsPage ? undefined : "page"}>Open Dash.</a>
-            <nav className="odp-nav" aria-label="Main navigation"><a href={caseStudy}>The story</a><a href={repository}>GitHub</a></nav>
+            <nav className="odp-nav" aria-label="Main navigation"><a href={caseStudy}>The story</a><a href={siteRoot + "/trends/"}>Trends</a><a href={repository}>GitHub</a></nav>
         </header>
         <main id="product-main" tabIndex={-1}>
             {reelsPage ? <ReelShowcase entries={entries} siteRoot={siteRoot} /> : <div className="odp-wrap">

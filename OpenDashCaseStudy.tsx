@@ -284,6 +284,7 @@ interface OpenDashLandingPageProps {
     style?: React.CSSProperties
     caseStudy?: boolean
     reelsPage?: boolean
+    trendsPage?: boolean
     siteRoot?: string
 }
 
@@ -317,7 +318,7 @@ function CreatorCredits({ labels }: { labels: string }) {
 
 function RedditResponse() {
     return (
-        <div className="odc-reddit">
+        <div className="odc-reddit" id="reddit-response">
             <h3 className="odc-evidence-heading">Four posts, four stages of the project</h3>
             <p>My June 21 wallpaper reveal drew the most upvotes. Two days later, the full introduction reached more readers and generated the most shares. The video experiment brought a different response, with questions about what the display could do and my own note that maps were lagging. The July 8 update shifted the discussion toward the project’s future.</p>
             <figure className="odc-chart odc-reddit-chart">
@@ -449,7 +450,7 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
 
 function SearchInterest() {
     return (
-        <figure className="odc-chart odc-trends" aria-labelledby="odc-trend-title">
+        <figure id="search-interest" className="odc-chart odc-trends" aria-labelledby="odc-trend-title">
             <figcaption className="odc-trends-heading">
                 <div>
                     <strong id="odc-trend-title">Google search interest</strong>
@@ -499,7 +500,78 @@ function SearchInterest() {
  * @framerIntrinsicWidth 1200
  * @framerIntrinsicHeight 5400
  */
-export default function OpenDashLandingPage({ style, caseStudy = false, reelsPage = false, siteRoot = "" }: OpenDashLandingPageProps) {
+function CommunityAnalysis({ siteRoot }: { siteRoot: string }) {
+    return (<section id="response" aria-labelledby="response-title">
+                            <h2 id="response-title">How riders responded</h2>
+                            <p>Screen-off navigation and pairing reliability kept coming up in public threads. The issue tracker also showed interest in app-only tools, including currencies, account setup, and offline routes with GPX import.</p>
+                            <SearchInterest />
+                            <RedditResponse />
+                            <h3 className="odc-evidence-heading" id="reels-title">Launch-week Reels</h3>
+                            <div className="odc-reels" role="list" aria-labelledby="reels-title">
+                                {reels.map((reel) => (
+                                    <article className="odc-reel" role="listitem" key={reel.href}>
+                                        <p className="odc-reel-date">{reel.date} · <CreatorCredits labels={reel.credit} /></p>
+                                        <h4><SourceLink href={reel.href}>{reel.title}</SourceLink></h4>
+                                        <p>{reel.description}</p>
+                                        <p className="odc-reel-counts"><strong>{reel.likes}</strong> likes <span aria-hidden="true">·</span> {reel.comments ? <><strong>{reel.comments}</strong> comments</> : "Comment count unavailable"} <span aria-hidden="true">·</span> <strong>{featuredViews[reel.href.split("/reel/")[1].split("/")[0]]}</strong> views</p>
+                                    </article>
+                                ))}
+                            </div>
+                            <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16–21, 2026. Instagram rounds larger totals.</p>
+                            <SourceLink href={publicSources.instagram}>Browse the Open Dash Instagram profile</SourceLink>
+                            <ReelTrendAnalysis siteRoot={siteRoot} />
+                            <dl id="github-response" className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">
+                                <div><dt>APK downloads</dt><dd>3,151</dd></div>
+                                <div><dt>Repository stars</dt><dd>82</dd></div>
+                                <div><dt>Reported forks</dt><dd>64</dd></div>
+                            </dl>
+                            <p className="odc-caption">GitHub snapshot on November 16, 2026. Downloads count requests for the v1.3.5 APK. This figure cannot establish installs or unique riders.</p>
+                            <figure className="odc-chart">
+                                <figcaption>Dated forks in the public API</figcaption>
+                                <ul>{forkHistory.map(([month, count]) => (
+                                    <li key={month}>
+                                        <span>{month}</span>
+                                        <span className="odc-bar" aria-hidden="true"><span style={{ width: (count / 18) * 100 + "%" }} /></span>
+                                        <strong>{count}</strong>
+                                    </li>
+                                ))}</ul>
+                                <p className="odc-caption">32 of the 53 dated forks were created in June or July. *November covers days 1–16.</p>
+                            </figure>
+                            <div className="odc-links">
+                                <SourceLink href={publicSources.releaseData}>GitHub asset count</SourceLink>
+                                <SourceLink href={publicSources.forks}>GitHub fork dates</SourceLink>
+                                <SourceLink href={publicSources.trendsMethod}>Google Trends methodology</SourceLink>
+                            </div>
+                        </section>)
+}
+
+function TrendsPage({ style, siteRoot }: { style?: React.CSSProperties; siteRoot: string }) {
+    return <div className="odc" style={style}>
+        <style>{styles}</style>
+        <a className="odc-skip" href="#trends-main">Skip to trends</a>
+        <header className="odc-header" id="top"><div className="odc-wrap odc-header-inner">
+            <a className="odc-brand" href={siteRoot + "/"}>Open Dash.</a>
+            <nav className="odc-header-nav" aria-label="Main navigation">
+                <a className="odc-header-link" href={siteRoot + "/case-study/"}>The story</a>
+                <a className="odc-header-link" href={siteRoot + "/reels/"}>Rider showcase</a>
+                <a className="odc-header-link" href={siteRoot + "/trends/"} aria-current="page">Trends</a>
+            </nav>
+        </div></header>
+        <main id="trends-main" tabIndex={-1} className="odc-wrap odc-trends-page">
+            <h1>Trends and community.</h1>
+            <p className="odc-lead">Search interest, rider posts, and the public response to Open Dash. Each snapshot includes its date, sources, and limits.</p>
+            <nav className="odc-trends-nav" aria-label="Trends sections">
+                <a href="#search-interest">Search interest</a><a href="#reddit-response">Reddit</a><a href="#reel-analysis">Instagram</a><a href="#github-response">GitHub</a>
+            </nav>
+            <article className="odc-story"><CommunityAnalysis siteRoot={siteRoot} /></article>
+            <p className="odc-return"><SourceLink href={siteRoot + "/case-study/"}>Back to the case study</SourceLink></p>
+        </main>
+        <footer className="odc-footer"><div className="odc-wrap odc-header-inner"><a href={siteRoot + "/"}>Open Dash</a><a href="#top">Back to top</a></div></footer>
+    </div>
+}
+
+export default function OpenDashLandingPage({ style, caseStudy = false, reelsPage = false, trendsPage = false, siteRoot = "" }: OpenDashLandingPageProps) {
+    if (trendsPage) return <TrendsPage style={style} siteRoot={siteRoot} />
     if (!caseStudy) {
         return <ProductPage reelsPage={reelsPage} style={style} entries={showcaseReels} repository={publicSources.repo} release={publicSources.release} siteRoot={siteRoot} />
     }
@@ -516,6 +588,7 @@ export default function OpenDashLandingPage({ style, caseStudy = false, reelsPag
                         <a className="odc-header-link" href={siteRoot + "/"}>Home</a>
                         <a className="odc-header-link" href={siteRoot + "/reels/"}>Rider showcase</a>
                         <a className="odc-header-link" href={siteRoot + "/case-study/"} aria-current="page">Case study</a>
+                        <a className="odc-header-link" href={siteRoot + "/trends/"}>Trends</a>
                     </nav>
                 </div>
             </header>
@@ -619,45 +692,8 @@ export default function OpenDashLandingPage({ style, caseStudy = false, reelsPag
 
                         <section id="response" aria-labelledby="response-title">
                             <h2 id="response-title">How riders responded</h2>
-                            <p>Screen-off navigation and pairing reliability kept coming up in public threads. The issue tracker also showed interest in app-only tools, including currencies, account setup, and offline routes with GPX import.</p>
-                            <SearchInterest />
-                            <RedditResponse />
-                            <h3 className="odc-evidence-heading" id="reels-title">Launch-week Reels</h3>
-                            <div className="odc-reels" role="list" aria-labelledby="reels-title">
-                                {reels.map((reel) => (
-                                    <article className="odc-reel" role="listitem" key={reel.href}>
-                                        <p className="odc-reel-date">{reel.date} · <CreatorCredits labels={reel.credit} /></p>
-                                        <h4><SourceLink href={reel.href}>{reel.title}</SourceLink></h4>
-                                        <p>{reel.description}</p>
-                                        <p className="odc-reel-counts"><strong>{reel.likes}</strong> likes <span aria-hidden="true">·</span> {reel.comments ? <><strong>{reel.comments}</strong> comments</> : "Comment count unavailable"} <span aria-hidden="true">·</span> <strong>{featuredViews[reel.href.split("/reel/")[1].split("/")[0]]}</strong> views</p>
-                                    </article>
-                                ))}
-                            </div>
-                            <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16–21, 2026. Instagram rounds larger totals.</p>
-                            <SourceLink href={publicSources.instagram}>Browse the Open Dash Instagram profile</SourceLink>
-                            <ReelTrendAnalysis siteRoot={siteRoot} />
-                            <dl className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">
-                                <div><dt>APK downloads</dt><dd>3,151</dd></div>
-                                <div><dt>Repository stars</dt><dd>82</dd></div>
-                                <div><dt>Reported forks</dt><dd>64</dd></div>
-                            </dl>
-                            <p className="odc-caption">GitHub snapshot on November 16, 2026. Downloads count requests for the v1.3.5 APK. This figure cannot establish installs or unique riders.</p>
-                            <figure className="odc-chart">
-                                <figcaption>Dated forks in the public API</figcaption>
-                                <ul>{forkHistory.map(([month, count]) => (
-                                    <li key={month}>
-                                        <span>{month}</span>
-                                        <span className="odc-bar" aria-hidden="true"><span style={{ width: (count / 18) * 100 + "%" }} /></span>
-                                        <strong>{count}</strong>
-                                    </li>
-                                ))}</ul>
-                                <p className="odc-caption">32 of the 53 dated forks were created in June or July. *November covers days 1–16.</p>
-                            </figure>
-                            <div className="odc-links">
-                                <SourceLink href={publicSources.releaseData}>GitHub asset count</SourceLink>
-                                <SourceLink href={publicSources.forks}>GitHub fork dates</SourceLink>
-                                <SourceLink href={publicSources.trendsMethod}>Google Trends methodology</SourceLink>
-                            </div>
+                            <p>Riders shared dashboard demos, asked about setup, and helped test pairing. The full analysis of search interest, Reddit posts, Instagram Reels, and GitHub activity now has its own page.</p>
+                            <p id="reel-analysis"><SourceLink href={siteRoot + "/trends/"}>Explore trends and community response</SourceLink></p>
                         </section>
 
                         <section className="odc-end" id="status" aria-labelledby="status-title">
@@ -705,6 +741,11 @@ const styles = `
     width: 100%;
     min-width: 0;
 }
+.odc-trends-page{max-width:1000px;padding-block:24px 64px}
+.odc-trends-nav{display:flex;flex-wrap:wrap;gap:8px 28px;margin:28px 0 48px;border-block:1px solid var(--edge);padding-block:12px}
+.odc-trends-nav a{display:inline-flex;align-items:center;min-height:44px;font-size:15px}
+.odc-trends-page [id]{scroll-margin-top:24px}
+.odc-return{padding-top:24px}
 .odc *, .odc *::after, .odc *::before { box-sizing: border-box; }
 .odc a { color: inherit; text-underline-offset: .24em; }
 .odc a:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 3px; }

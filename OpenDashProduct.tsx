@@ -31,12 +31,6 @@ export function reelCount(value: string) {
 function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot: string }) {
     const [sort, setSort] = React.useState<ReelSort>("views")
     const [limit, setLimit] = React.useState(9)
-    const [playing, setPlaying] = React.useState<ShowcaseReel | null>(null)
-    const dialog = React.useRef<HTMLDialogElement>(null)
-    React.useEffect(() => {
-        if (playing) dialog.current?.showModal()
-        else dialog.current?.close()
-    }, [playing])
     const sorted = React.useMemo(() => {
         return [...entries].sort((a, b) => {
             const byRecent = b.date.localeCompare(a.date)
@@ -64,13 +58,13 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                     </select>
                 </label>
             </div>
-            <p className="odp-reels-note" aria-live="polite">Showing {visible.length} of {entries.length} Reels. Public counts checked November 16, 2026. A dash means unavailable.</p>
+            <p className="odp-reels-note" aria-live="polite">Showing {visible.length} of {entries.length} Reels. Counts checked November 16–21, 2026. A dash means unavailable.</p>
             <ul className="odp-tiles">
                 {visible.map((entry) => (
                     <li key={entry.id} className="odp-tile">
                         <div className="odp-tile-top">
                             <time dateTime={"2026-" + entry.date}>{entry.date.startsWith("06") ? "Jun" : "Jul"} {Number(entry.date.slice(3))}, 2026</time>
-                            <button className="odp-play" type="button" aria-label={`Watch ${entry.title}`} onClick={() => setPlaying(entry)}>▶</button>
+                            <a className="odp-play" aria-label={`Watch ${entry.title} on Instagram`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">▶</a>
                         </div>
                         <h3><a href={`https://www.instagram.com/reel/${entry.id}/`}>{entry.title}</a></h3>
                         <p className="odp-credit">{entry.credit.split(" × ").map((handle) => <a key={handle} href={`https://www.instagram.com/${handle.slice(1)}/`}>{handle}</a>)}</p>
@@ -84,13 +78,6 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
             </ul>
             {visible.length < entries.length && <button className="odp-button odp-secondary odp-more" type="button" onClick={() => setLimit(entries.length)}>Show all {entries.length} Reels</button>}
             <a className="odp-textlink" href={siteRoot + "/case-study/#response"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
-            <dialog ref={dialog} className="odp-watch" aria-labelledby="odp-watch-title" onCancel={() => setPlaying(null)} onClick={(event) => { if (event.target === event.currentTarget) setPlaying(null) }}>
-                {playing && <div className="odp-watch-content">
-                    <div className="odp-watch-header"><h3 id="odp-watch-title">{playing.title}</h3><button className="odp-button odp-secondary" type="button" onClick={() => setPlaying(null)}>Close</button></div>
-                    <iframe title={`Instagram Reel by ${playing.original}`} src={`https://www.instagram.com/reel/${playing.id}/embed/`} allow="encrypted-media; fullscreen" referrerPolicy="strict-origin-when-cross-origin" />
-                    <a className="odp-textlink" href={`https://www.instagram.com/reel/${playing.id}/`}>Open on Instagram <span aria-hidden="true">↗</span></a>
-                </div>}
-            </dialog>
         </section>
     )
 }
@@ -276,13 +263,6 @@ const productStyles = `
 .odp-counts dt { font-size:.71rem; color:var(--muted); }
 .odp-counts dd { font-weight:750; font-variant-numeric:tabular-nums; }
 .odp-more { margin-right:14px; }
-.odp-watch { width:min(460px,calc(100% - 24px)); max-height:calc(100dvh - 24px); padding:18px; border:1px solid var(--edge); border-radius:14px; background:var(--paper); color:var(--ink); overflow:auto; }
-.odp-watch::backdrop { background:#0b160bd9; }
-.odp-watch-content { display:grid; gap:12px; }
-.odp-watch-header { display:flex; align-items:start; gap:14px; justify-content:space-between; }
-.odp-watch-header h3 { padding-top:8px; }
-.odp-watch-header button { flex:none; }
-.odp-watch iframe { width:100%; height:min(570px,65dvh); border:0; background:white; border-radius:8px; }
 @media (max-width:850px) {
     .odp-hero { gap:25px; }
     .odp h1 { font-size:clamp(2.8rem,8vw,4.25rem); }

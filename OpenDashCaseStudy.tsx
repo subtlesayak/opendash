@@ -59,6 +59,15 @@ const redditPosts = [
 const reels = [
     {
         date: "June 24, 2026",
+        title: "A community showcase on the Guerrilla 450",
+        credit: "@thegrrlife × @subtlesayak",
+        description: "The collaborators show the Guerrilla 450 dashboard and reflect on how riders extended the wallpaper feature.",
+        likes: "2.8K",
+        comments: "279",
+        href: "https://www.instagram.com/reel/DZ-Bp3TI1AX/",
+    },
+    {
+        date: "June 24, 2026",
         title: "How to set a custom wallpaper",
         credit: "@thegrrlife × @subtlesayak",
         description: "Crop a photo in Open Dash and see it on a parked Guerrilla 450’s Tripper Dash.",
@@ -118,60 +127,62 @@ const repostEvidence = [
     ["thulasiram.basha","DZ7USzRpoW_","06-23","Custom wallpaper on Royal Enfield dashboards","79.5K","","2.3M","0",""],
     ["rideonraja","DZ998XLTBTj","06-24","Full Open Dash tutorial","2.4K","4.1K","95.1K","15","09-06"],
     ["thegrrlife","DZ9sShoIERo","06-24","Guerrilla 450 wallpaper tutorial","61.5K","3K","1.1M","15","08-30"],
-    ["chorrobambairo450","DZ94ku9i6XQ","06-24","Related Tripper Dash tutorial","6.3K","1.8K","","15","11-03"],
-    ["moto_inside_out","DZ-DRYGpTMy","06-24","Android dash customization walkthrough","1.6K","1.6K","","15","06-30"],
-    ["siddhant27595","DZ-RifKhLNZ","06-24","Open Dash cockpit on a Guerrilla 450","132","4","","3","06-26"],
+    ["thegrrlife","DZ-Bp3TI1AX","06-24","Guerrilla 450 community wallpaper showcase","2.8K","279","64.6K","15","09-17"],
+    ["chorrobambairo450","DZ94ku9i6XQ","06-24","Related Tripper Dash tutorial","6.3K","1.8K","143K","15","11-03"],
+    ["moto_inside_out","DZ-DRYGpTMy","06-24","Android dash customization walkthrough","1.6K","1.6K","69K","15","06-30"],
+    ["siddhant27595","DZ-RifKhLNZ","06-24","Open Dash cockpit on a Guerrilla 450","132","4","5,321","3","06-26"],
     ["mrudul_rp","DZ-ooSRTDon","06-24","Himalayan 450 custom wallpaper","145","28","3,538","15","07-21"],
-    ["rebelwheel","DZ-iIIVogIU","06-24","Personal photo on the Himalayan dash","180","10","","7","08-30"],
-    ["speedy_.310","DZ-Fql4vHTL","06-24","Changing the Tripper Dash wallpaper","1.7K","1.1K","","14","08-28"],
+    ["rebelwheel","DZ-iIIVogIU","06-24","Personal photo on the Himalayan dash","180","10","5,611","7","08-30"],
+    ["speedy_.310","DZ-Fql4vHTL","06-24","Changing the Tripper Dash wallpaper","1.7K","1.1K","51K","14","08-28"],
     ["subtlesayak","DZ-TzFHz_HR","06-24","Multiple wallpapers on a Himalayan 450","148","19","5,316","14","10-27"],
-    ["themotoamit","DZ-Ran6Muuo","06-24","Setting a custom Tripper wallpaper","252","84","","14","09-04"],
-    ["lorinhosobreduasrodas1","DZ-fMg2Ovz1","06-24","Related Portuguese-language dashboard reaction","1.6K","127","","13","06-26"],
+    ["themotoamit","DZ-Ran6Muuo","06-24","Setting a custom Tripper wallpaper","252","84","15K","14","09-04"],
+    ["lorinhosobreduasrodas1","DZ-fMg2Ovz1","06-24","Related Portuguese-language dashboard reaction","1.6K","127","38.4K","13","06-26"],
     ["madblack.in","DaA21SKPyjm","06-25","Himalayan dashboard customization walkthrough","4.5K","116","120K","13","07-01"],
-    ["_mouli_vijay_","DaBAtdNTe_Y","06-25","Open Dash on a Himalayan 450","","6","","3","06-26"],
-    ["thegrrlife","DaBJApAqSMt","06-25","Switching saved wallpapers","227","77","7,605","15","10-26"],
-    ["dhass_kavin","DZ_2Hh0oGDX","06-25","Personalizing a Himalayan dashboard","134","31","","15","08-06"],
+    ["_mouli_vijay_","DaBAtdNTe_Y","06-25","Open Dash on a Himalayan 450","","6","2,680","3","06-26"],
+    ["thegrrlife","DaBJApAqSMt","06-25","Switching saved wallpapers","227","77","7,608","15","10-26"],
+    ["dhass_kavin","DZ_2Hh0oGDX","06-25","Personalizing a Himalayan dashboard","134","31","3,702","15","08-06"],
     ["thakur_surya_pratap","DZ_mfZThPGq","06-25","Wallpaper settings for the Tripper Dash","34","9","1,579","6","11-07"],
-    ["man.behindwheels","DaAlGqeTBtx","06-25","Open Dash for the Himalayan and Guerrilla","50","18","","5","09-07"],
-    ["dtusharxo","DaA9f85zY5O","06-25","Himalayan 450 Tripper Dash with Open Dash","61","","","0",""],
+    ["man.behindwheels","DaAlGqeTBtx","06-25","Open Dash for the Himalayan and Guerrilla","50","18","4,154","5","09-07"],
+    ["dtusharxo","DaA9f85zY5O","06-25","Himalayan 450 Tripper Dash with Open Dash","61","","1,631","0",""],
     ["igris_450","DZ_9EOfT2dR","06-25","Open Dash 1.3 wallpaper walkthrough","165","","12.8K","0",""],
-    ["ridewith_trishul","DaAt0yDsHuv","06-25","Related Himalayan 450 feature showcase","257","19","","15","09-16"],
-    ["chintanratss","DZ_s02rsw6c","06-25","Related Himalayan 450 Reel","56","1","","1","06-25"],
-    ["jashmir_tikhak_thanching","DaAizJoTeqp","06-25","Himalayan 450 Open Dash feature demo","41","1","","1","06-26"],
+    ["ridewith_trishul","DaAt0yDsHuv","06-25","Related Himalayan 450 feature showcase","257","19","8,921","15","09-16"],
+    ["chintanratss","DZ_s02rsw6c","06-25","Related Himalayan 450 Reel","56","1","1,716","1","06-25"],
+    ["jashmir_tikhak_thanching","DaAizJoTeqp","06-25","Himalayan 450 Open Dash feature demo","41","1","2,257","1","06-26"],
     ["himalayan_wanderer_kl13","DaAiJgvTvlW","06-25","Tripper Dash wallpaper how-to","5.5K","575","143K","15","06-28"],
-    ["axton45t","DaAil6ol_pp","06-25","Related Royal Enfield dashboard showcase","337","38","","7","06-27"],
+    ["axton45t","DaAil6ol_pp","06-25","Related Royal Enfield dashboard showcase","337","38","8,879","7","06-27"],
     ["lorinhosobreduasrodas1","DZ-yySEOSOM","06-25","Portuguese-language Open Dash reaction","508","86","16.2K","14","07-13"],
-    ["lifeofthilak","DZ-yqbNoCJQ","06-25","Guerrilla 450 wallpaper with Open Dash","4.7K","8","","4","06-27"],
-    ["ride_with_jijo","DaDcZ5mzbu0","06-26","Guerrilla 450 dashboard walkthrough","5.5K","373","","15","09-11"],
-    ["deep_trailzzzz","DaB_z-2O42q","06-26","Android dashboard feature demo","245","10","","7","07-09"],
+    ["lifeofthilak","DZ-yqbNoCJQ","06-25","Guerrilla 450 wallpaper with Open Dash","4.7K","8","97.1K","4","06-27"],
+    ["ride_with_jijo","DaDcZ5mzbu0","06-26","Guerrilla 450 dashboard walkthrough","5.5K","373","195K","15","09-11"],
+    ["deep_trailzzzz","DaB_z-2O42q","06-26","Android dashboard feature demo","245","10","8,820","7","07-09"],
     ["pasha_the_himalayan","DaF_lo_vhDi","06-27","Nighttime dash customization","6.8K","233","153K","15","07-04"],
-    ["hemagiri_bennur","DaE4gmNScgm","06-27","Himalayan 450 wallpaper tutorial","32","3","","3","11-14"],
-    ["soorajvallimalas","DaFchG1IpND","06-27","Wallpaper and off-screen map demonstration","235","128","","15","06-29"],
-    ["karwan_ofcl","DaF2tVVs4-J","06-27","Open Dash wallpaper feature and credits","91","19","","12","10-25"],
-    ["moto_inside_out","DaFzZKvJPUw","06-27","Follow-up on finding the Android app","","99","","15","06-28"],
-    ["explorewithnetra","DaFvI0rM7jQ","06-27","Open Dash navigation and ride stats on a Himalayan","158","33","","15","11-04"],
-    ["sumeeth_263","DaIQPLWT-SX","06-28","Guerrilla 450 wallpaper clip","","","","0",""],
-    ["gastroride397","DaGk5XHxHX4","06-28","Portuguese-language TFT wallpaper demo","417","33","","15","09-22"],
-    ["royalenfieldcrazy","DaGeHeYhH-w","06-28","Portuguese-language dash wallpaper walkthrough","162","26","","14","09-06"],
-    ["suru_2104","DaK8WCKuyOj","06-29","Open Dash background on the round TFT","69","14","","5","09-12"],
+    ["hemagiri_bennur","DaE4gmNScgm","06-27","Himalayan 450 wallpaper tutorial","32","3","1,507","3","11-14"],
+    ["soorajvallimalas","DaFchG1IpND","06-27","Wallpaper and off-screen map demonstration","235","128","13.7K","15","06-29"],
+    ["karwan_ofcl","DaF2tVVs4-J","06-27","Open Dash wallpaper feature and credits","91","19","2,531","12","10-25"],
+    ["moto_inside_out","DaFzZKvJPUw","06-27","Follow-up on finding the Android app","","99","15.1K","15","06-28"],
+    ["explorewithnetra","DaFvI0rM7jQ","06-27","Open Dash navigation and ride stats on a Himalayan","158","33","5,025","15","11-04"],
+    ["sumeeth_263","DaIQPLWT-SX","06-28","Guerrilla 450 wallpaper clip","","","7,599","0",""],
+    ["gastroride397","DaGk5XHxHX4","06-28","Portuguese-language TFT wallpaper demo","417","33","12.5K","15","09-22"],
+    ["royalenfieldcrazy","DaGeHeYhH-w","06-28","Portuguese-language dash wallpaper walkthrough","162","26","5,588","14","09-06"],
+    ["suru_2104","DaK8WCKuyOj","06-29","Open Dash background on the round TFT","69","14","6,396","5","09-12"],
     ["bluey_45t","DaS-YWCIP6o","07-02","Portrait wallpaper on a Guerrilla 450","839","19","30.2K","9","11-15"],
     ["igris_450","DaSvRAbTzjn","07-02","Screen-off navigation demonstration","8.3K","","377K","0",""],
     ["ajittt__009__","DaW1tQoNirx","07-04","Open Dash on a Guerrilla 450","112","5","3,148","2","07-04"],
-    ["therevvinvinay","DaXBIwHyGer","07-04","Open Dash feature demo","129","6","","1","07-04"],
+    ["therevvinvinay","DaXBIwHyGer","07-04","Open Dash feature demo","129","6","4,675","1","07-04"],
     ["igris_450","Dap7wn5RT37","07-11","Creator response to the public scope change","6.6K","133","294K","14","10-08"],
     ["aksharsodyssey","Da0vcuwsW4e","07-16","Rebuilding the removed dashboard feature","5.3K","134","256K","15","07-19"],
 ] as const
 
 const featuredViews: Record<string, string> = {
+    "DZ-Bp3TI1AX": "64.6K",
     DZ9sShoIERo: "1.1M",
     "DZ-TzFHz_HR": "5,316",
     DZ8ZUUxzZi6: "110K",
     DZ_9EOfT2dR: "12.8K",
-    DaBJApAqSMt: "7,605",
+    DaBJApAqSMt: "7,608",
     DaBOnTEzjJQ: "1,697",
 }
 
-const launchCohorts = [["Jun 23–27", 35], ["Jun 28–Jul 4", 8], ["Jul 5–16", 2]] as const
+const launchCohorts = [["Jun 23–27", 36], ["Jun 28–Jul 4", 8], ["Jul 5–16", 2]] as const
 
 // All other weeks in this Google Trends snapshot displayed zero for both terms.
 const searchWeeks = [
@@ -334,6 +345,9 @@ function RepostArchive({ siteRoot }: { siteRoot: string }) {
     const repostsWithViews = showcaseReels.filter((reel) => repostIds.has(reel.id) && reel.views)
     const topViews = [...repostsWithViews].sort((a, b) => reelCount(b.views) - reelCount(a.views)).slice(0, 5)
     const maxViews = reelCount(topViews[0].views)
+    const knownLikes = repostEvidence.map((entry) => entry[4]).filter(Boolean).map(reelCount).sort((a, b) => b - a)
+    const likesTotal = knownLikes.reduce((total, count) => total + count, 0)
+    const topLikesShare = Math.round((knownLikes[0] + knownLikes[1]) / likesTotal * 100)
     return (
         <div className="odc-repost-archive">
             <h3 className="odc-evidence-heading">The creators who carried it</h3>
@@ -341,9 +355,9 @@ function RepostArchive({ siteRoot }: { siteRoot: string }) {
             <figure className="odc-chart">
                 <figcaption>When the reposted Reels were published</figcaption>
                 <ul className="odc-cohorts">{launchCohorts.map(([period, count]) => (
-                    <li key={period}><span>{period}</span><span className="odc-bar" aria-hidden="true"><span style={{ width: (count / 35) * 100 + "%" }} /></span><strong>{count}</strong></li>
+                    <li key={period}><span>{period}</span><span className="odc-bar" aria-hidden="true"><span style={{ width: (count / 36) * 100 + "%" }} /></span><strong>{count}</strong></li>
                 ))}</ul>
-                <p className="odc-caption">35 of 45 related Reels were published June 23–27. This is the posting pattern in the project’s curated Reposts grid.</p>
+                <p className="odc-caption">36 of {repostEvidence.length} related Reels were published June 23–27. This is the posting pattern in the project’s curated Reposts grid.</p>
             </figure>
             <figure className="odc-chart odc-reel-views">
                 <figcaption>Most-viewed Reels with a verified counter</figcaption>
@@ -354,14 +368,14 @@ function RepostArchive({ siteRoot }: { siteRoot: string }) {
                         <strong>{views}</strong>
                     </li>
                 ))}</ul>
-                <p className="odc-caption">Cumulative views as of November 16, 2026. Instagram displayed verifiable view counts for {repostsWithViews.length} of the 45 related reposts.</p>
+                <p className="odc-caption">Cumulative views checked November 16–21, 2026. Instagram displayed verifiable view counts for {repostsWithViews.length} of the {repostEvidence.length} related reposts.</p>
             </figure>
-            <p>The two most-viewed Reels in the verified set both showed wallpaper customization. Together they also account for about <strong>68%</strong> of the visible likes across the 42 related Reels with a like count. Screen-off navigation drew <strong>377K views</strong>, and a later creator response to the scope change drew <strong>294K</strong>.</p>
-            <p className="odc-caption">The signed-in Reposts tab showed 47 distinct Reels and a carousel. The analysis covers 45 related Reels from that tab. The homepage showcase also includes two relevant launch clips verified outside the Reposts grid.</p>
-            <p>Of <strong>426 visible comments</strong> sampled across 40 Reels, <strong>158</strong> mentioned links, APKs, or downloads and <strong>12</strong> matched setup or connection terms. Five Reels had a dated November comment in the sample. Instagram’s comment ordering can hide newer replies, and these snapshots give no impressions history.</p>
+            <p>The two most-viewed Reels in the verified set both showed wallpaper customization. Together they also account for about <strong>{topLikesShare}%</strong> of the visible likes across the {knownLikes.length} related Reels with a like count. Screen-off navigation drew <strong>377K views</strong>, and a later creator response to the scope change drew <strong>294K</strong>.</p>
+            <p className="odc-caption">The November 21 rescan found 49 reposted items, comprising 48 Reels and one photo carousel. The analysis covers {repostEvidence.length} related Reels from that tab. The homepage showcase also includes two relevant launch clips verified outside the Reposts grid.</p>
+            <p>Of <strong>441 visible comments</strong> sampled across 41 Reels, <strong>171</strong> mentioned links, APKs, or downloads and <strong>12</strong> matched setup or connection terms. Five Reels had a dated November comment in the sample. Instagram’s comment ordering can hide newer replies, and these snapshots give no impressions history.</p>
             <details className="odc-trend-details">
-                <summary>Browse all 45 Reels and creator credits</summary>
-                <p className="odc-caption">Counts were checked November 16, 2026. Views come from matching View Count badges. A dash means the count wasn’t visible or couldn’t be matched. Posted dates use India time. Latest sampled comment dates use UTC.</p>
+                <summary>Browse all {repostEvidence.length} Reels and creator credits</summary>
+                <p className="odc-caption">Counts were checked November 16–21, 2026. Views come from matching View Count badges. A dash means the count wasn’t visible or couldn’t be matched. Posted dates use India time. Latest sampled comment dates use UTC.</p>
                 <ul className="odc-repost-list">
                     {repostEvidence.map(([creator, id, date, title, likes, comments, views, sample, latest]) => (
                         <li key={id}>
@@ -572,7 +586,7 @@ export default function OpenDashLandingPage({ style, caseStudy = false, siteRoot
                                     </article>
                                 ))}
                             </div>
-                            <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16, 2026. Instagram rounds larger totals.</p>
+                            <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16–21, 2026. Instagram rounds larger totals.</p>
                             <SourceLink href={publicSources.instagram}>Browse the Open Dash Instagram profile</SourceLink>
                             <RepostArchive siteRoot={siteRoot} />
                             <dl className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">

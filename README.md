@@ -21,6 +21,6 @@ The preview serves the site at http://127.0.0.1:4173/opendash/.
 
 ## Deployment
 
-The GitHub Actions workflow builds and publishes `dist/` to GitHub Pages from `main`. Both the product page and `/case-study/` are rendered as static HTML, with React providing the Reel sorting and player controls.
+The GitHub Actions workflow builds and publishes `dist/` to GitHub Pages from `main`. Both the product page and `/case-study/` are rendered as static HTML, with React providing the Reel sorting. Play controls open the original Reel on Instagram.
 
-Instagram counts are a November 16, 2026 snapshot. Reddit Post Insights are a November 21, 2026 snapshot. Unavailable counters are marked with a dash. View totals can include repeat viewers.
+Instagram counts were checked November 16–21, 2026. Reddit Post Insights are a November 21, 2026 snapshot. Unavailable counters are marked with a dash. View totals can include repeat viewers.

@@ -28,6 +28,14 @@ export function reelCount(value: string) {
 function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot: string }) {
     const [sort, setSort] = React.useState<ReelSort>("views")
     const [limit, setLimit] = React.useState(9)
+    const listRef = React.useRef<HTMLUListElement>(null)
+    const nextFocusIndex = React.useRef<number | null>(null)
+    React.useEffect(() => {
+        if (nextFocusIndex.current !== null) {
+            listRef.current?.children[nextFocusIndex.current]?.querySelector<HTMLAnchorElement>("a")?.focus()
+            nextFocusIndex.current = null
+        }
+    }, [limit])
     const sorted = React.useMemo(() => {
         return [...entries].sort((a, b) => {
             const byRecent = b.date.localeCompare(a.date)
@@ -55,7 +63,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                 </label>
             </div>
             <p className="odp-reels-note" aria-live="polite">Showing {visible.length} of {entries.length} Reels. Counts checked November 16–21, 2026. A dash means unavailable.</p>
-            <ul className="odp-tiles">
+            <ul className="odp-tiles" id="odp-reel-list" ref={listRef}>
                 {visible.map((entry) => (
                     <li key={entry.id} className="odp-tile">
                         <a className="odp-cover" aria-label={`Watch ${entry.title} on Instagram`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">
@@ -76,7 +84,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                     </li>
                 ))}
             </ul>
-            {visible.length < entries.length && <button className="odp-button odp-secondary odp-more" type="button" onClick={() => setLimit(entries.length)}>Show all {entries.length} Reels</button>}
+            {visible.length < entries.length && <button className="odp-button odp-secondary odp-more" type="button" aria-controls="odp-reel-list" onClick={() => { nextFocusIndex.current = visible.length; setLimit((current) => Math.min(current + 9, entries.length)) }}>Show {Math.min(9, entries.length - visible.length)} more Reels</button>}
             <a className="odp-textlink" href={siteRoot + "/trends/#reel-analysis"}>Read the trend analysis <span aria-hidden="true">↗</span></a>
         </section>
     )
@@ -114,7 +122,7 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
                 <AppPreview siteRoot={siteRoot} />
                 <section className="odp-intro" aria-labelledby="odp-title">
                     <h1 id="odp-title">A new view<br />of your ride.</h1>
-                    <div><p className="odp-description">Route previews, ride history, and a garage for your motorcycles. An open-source Android project, built around the ride.</p><a className="odp-intro-link" href={repository}>Explore the app</a></div>
+                    <div><p className="odp-description">Route previews, ride history, and a garage for your motorcycles. An open-source Android project, built around the ride.</p><a className="odp-intro-link" href={release}>Download for Android</a><p className="odp-install-note">Opens the GitHub release. Choose the APK under Assets and review the release notes before installing.</p></div>
                 </section>
                 <section className="odp-stories-section" aria-labelledby="odp-inside-title"><h2 id="odp-inside-title">Inside Open Dash</h2>
                     <div className="odp-stories">
@@ -156,6 +164,7 @@ const productStyles = `
 .odp h1{font-size:76px;letter-spacing:-3.3px;line-height:1.03;font-weight:750}
 .odp .odp-description{font-size:23px;line-height:1.4;margin:2px 0 22px}
 .odp-intro-link{font-size:21px}
+.odp .odp-install-note{font-size:14px;line-height:1.5;color:var(--muted);margin-top:12px;max-width:45ch}
 .odp h2{font-size:56px;letter-spacing:-2.2px;line-height:1.1;margin:0 0 36px}
 .odp-stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
 .odp-story-image{height:236px;overflow:hidden;background:#e9edef;display:flex;align-items:center;justify-content:center}
@@ -223,12 +232,12 @@ const productStyles = `
 
 @media(max-width:600px){.odp-wrap{padding-inline:22px}
 .odp-header{display:block;padding-top:30px;padding-bottom:28px}
-.odp-brand{font-size:51px;letter-spacing:-3px}
+.odp-brand{font-size:clamp(42px,13vw,51px);letter-spacing:-3px}
 .odp-nav{margin-top:16px;gap:28px}
 .odp-hero-image{display:none}
-.odp-appstage{height:370px;padding-top:38px;display:flex;align-items:center;justify-content:center}
+.odp-appstage{height:auto;padding-top:70px;padding-bottom:28px;display:flex;align-items:center;justify-content:center}
 .odp-mobile-screens{display:flex;gap:18px;justify-content:center;align-items:center;width:100%}
-.odp-mobile-screens img{height:272px;width:auto;max-width:42%;object-fit:contain;border:4px solid #191919;border-radius:16px;box-shadow:0 12px 18px #19242826}
+.odp-mobile-screens img{height:auto;width:42%;max-width:138px;border:4px solid #191919;border-radius:16px;box-shadow:0 12px 18px #19242826}
 .odp-cover-brand{font-size:23px;left:22px;top:19px;transform:none}
 .odp-intro{grid-template-columns:1fr;gap:24px;padding-top:34px;padding-bottom:58px}
 .odp h1{font-size:49px;max-width:360px}

@@ -1,4 +1,5 @@
 import * as React from "react"
+import { SiteHeader, SiteFooter, ArticleHeader, RelatedPages } from "./pages/SiteLayout"
 
 export type ShowcaseReel = {
     id: string
@@ -50,7 +51,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
         <section id="reels" aria-labelledby="odp-reels-title" className="odp-wrap odp-reels">
             <div className="odp-section-top">
                 <div>
-                    <h1 id="odp-reels-title">Seen on the road.</h1>
+
                     <p>Watch riders demo wallpapers, walk through setup, and try screen-off navigation during the dashboard experiment.</p>
                 </div>
                 <label className="odp-sort">
@@ -66,7 +67,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
             <ul className="odp-tiles" id="odp-reel-list" ref={listRef}>
                 {visible.map((entry) => (
                     <li key={entry.id} className="odp-tile">
-                        <a className="odp-cover" aria-label={`Watch ${entry.title} on Instagram`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">
+                        <a className="odp-cover" aria-label={`Watch ${entry.title} on Instagram (opens in a new tab)`} href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer">
                             <img src={mediaUrl(siteRoot, `reels/${entry.id}.jpg`)} alt="" width={640} height={853} loading="lazy" decoding="async" />
                             <span className="odp-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z" fill="currentColor" /></svg></span>
                             <span className="odp-cover-label" aria-hidden="true">Watch Reel ↗</span>
@@ -74,7 +75,7 @@ function ReelShowcase({ entries, siteRoot }: { entries: ShowcaseReel[]; siteRoot
                         <div className="odp-tile-top">
                             <time dateTime={"2026-" + entry.date}>{entry.date.startsWith("06") ? "Jun" : "Jul"} {Number(entry.date.slice(3))}, 2026</time>
                         </div>
-                        <h2><a href={`https://www.instagram.com/reel/${entry.id}/`}>{entry.title}</a></h2>
+                        <h2><a href={`https://www.instagram.com/reel/${entry.id}/`} target="_blank" rel="noopener noreferrer" aria-label={`${entry.title} (opens Instagram in a new tab)`}>{entry.title}</a></h2>
                         <p className="odp-credit">{entry.credit.split(" × ").map((handle) => <a key={handle} href={`https://www.instagram.com/${handle.slice(1)}/`}>{handle}</a>)}</p>
                         <dl className="odp-counts">
                             <div><dt>Views</dt><dd>{entry.views || "—"}</dd></div>
@@ -113,15 +114,11 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
     return <div className="odp" style={style}>
         <style>{productStyles}</style>
         <a className="odp-skip" href="#product-main">Skip to content</a>
-        <header className="odp-wrap odp-header">
-            <a className="odp-brand" href={siteRoot + "/"} aria-current={reelsPage ? undefined : "page"}>Open Dash.</a>
-            <nav className="odp-nav" aria-label="Main navigation"><a href={caseStudy}>The story</a><a href={siteRoot + "/trends/"}>Trends</a><a href={repository}>GitHub</a></nav>
-        </header>
+        <SiteHeader siteRoot={siteRoot} current={reelsPage ? "reels" : "home"} />
         <main id="product-main" tabIndex={-1}>
-            {reelsPage ? <ReelShowcase entries={entries} siteRoot={siteRoot} /> : <div className="odp-wrap">
+            {reelsPage ? <><ArticleHeader title="Seen on the road." metadata="Rider archive · June–July 2026" id="odp-reels-title" /><ReelShowcase entries={entries} siteRoot={siteRoot} /></> : <><ArticleHeader title="A new view of your ride." metadata="An open-source Android motorcycle project" /><div className="odp-wrap">
                 <AppPreview siteRoot={siteRoot} />
-                <section className="odp-intro" aria-labelledby="odp-title">
-                    <h1 id="odp-title">A new view<br />of your ride.</h1>
+                <section className="odp-intro" aria-label="About Open Dash">
                     <div><p className="odp-description">Route previews, ride history, and a garage for your motorcycles. An open-source Android project, built around the ride.</p><a className="odp-intro-link" href={release}>Download for Android</a><p className="odp-install-note">Opens the GitHub release. Choose the APK under Assets and review the release notes before installing.</p></div>
                 </section>
                 <section className="odp-stories-section" aria-labelledby="odp-inside-title"><h2 id="odp-inside-title">Inside Open Dash</h2>
@@ -134,31 +131,28 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
                             <h3><a href={siteRoot + "/reels/"}>Seen on the road</a></h3><a className="odp-story-link" href={siteRoot + "/reels/"}>Watch the rider showcase</a><p className="odp-source-note">Cover: <a href="https://www.instagram.com/moto_inside_out/">@moto_inside_out</a></p></article>
                     </div>
                 </section>
-            </div>}
+            </div></>}
+            {reelsPage && <RelatedPages siteRoot={siteRoot} current="reels" />}
         </main>
-        <footer className="odp-wrap"><div className="odp-footer"><a href={siteRoot + "/"}>Open Dash</a><div><a href={release}>v1.3.5 release notes</a><p>An independent, open-source project.</p></div></div></footer>
+        <SiteFooter siteRoot={siteRoot} current={reelsPage ? "reels" : "home"} />
     </div>
 }
 
 const productStyles = `
-.odp{font:16px/1.5 Arial,Helvetica,sans-serif;color:#080808;background:#fff;width:100%;--muted:#606060;--edge:#ddd}
+.odp{font:16px/1.7 var(--site-font);color:var(--site-ink);background:var(--site-bg);width:100%;--muted:var(--site-muted);--edge:var(--site-edge)}
 
 .odp *,.odp *::before,.odp *::after{box-sizing:border-box}
 .odp a{color:inherit;text-underline-offset:5px;text-decoration-thickness:1px}
-.odp a:hover{color:#287344}
-.odp a:focus-visible,.odp button:focus-visible,.odp select:focus-visible{outline:3px solid #287344;outline-offset:5px}
+.odp a:hover{color:var(--site-accent)}
+.odp a:focus-visible,.odp button:focus-visible,.odp select:focus-visible{outline:3px solid var(--site-accent);outline-offset:5px}
 .odp h1,.odp h2,.odp h3,.odp p,.odp figure,.odp dl,.odp dd{margin:0}
 .odp-wrap{max-width:1200px;margin-inline:auto;padding-inline:40px}
-.odp-skip{position:absolute;left:20px;top:-60px;background:#fff;padding:12px;z-index:2}
+.odp-skip{position:absolute;left:20px;top:-60px;background:var(--site-panel);padding:12px;z-index:2}
 .odp-skip:focus{top:10px}
-.odp-header{display:flex;align-items:baseline;justify-content:space-between;gap:28px;padding-top:30px;padding-bottom:40px}
-.odp-brand{font-size:86px;font-weight:800;letter-spacing:-5px;line-height:1;text-decoration:none}
-.odp-nav{display:flex;gap:36px;font-size:18px}
-.odp-nav a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none}
 .odp-appstage{position:relative;background:#e9edef;overflow:hidden}
 .odp-hero-image{display:block;width:100%;height:auto;aspect-ratio:1736/906;object-fit:cover}
 .odp-mobile-screens{display:none}
-.odp-cover-brand{position:absolute;left:3%;top:50%;transform:translateY(-50%);font-size:34px;letter-spacing:-1.5px;font-weight:800;color:#287344}
+.odp-cover-brand{position:absolute;left:3%;top:50%;transform:translateY(-50%);font-size:34px;letter-spacing:-1.5px;font-weight:800;color:#765317}
 .odp-preview figcaption{font-size:12px;color:var(--muted);padding-top:10px;line-height:1.6}
 .odp-intro{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;padding-top:48px;padding-bottom:90px}
 .odp h1{font-size:76px;letter-spacing:-3.3px;line-height:1.03;font-weight:750}
@@ -176,11 +170,7 @@ const productStyles = `
 .odp h3{font-size:28px;letter-spacing:-.8px;line-height:1.13;margin:20px 0;min-height:64px}
 .odp h3 a{text-decoration:none}
 .odp-story-link{font-size:17px;line-height:1.6}
-.odp .odp-source-note{font-size:12px;color:#656565;margin:8px 0 0}
-.odp-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-top:1px solid #aaa;margin-top:64px;padding:22px 0 28px;font-size:14px}
-.odp-footer>a{font-size:20px;letter-spacing:-.6px;font-weight:700;text-decoration:none}
-.odp-footer>div{text-align:right}
-.odp-footer p{margin-top:8px}
+.odp .odp-source-note{font-size:12px;color:var(--site-muted);margin:8px 0 0}
 
 .odp-reels{padding-top:35px}
 .odp-reels h1{margin:0 0 24px;font-size:64px}
@@ -188,7 +178,7 @@ const productStyles = `
 .odp-section-top>div{max-width:650px}
 .odp-section-top p{color:var(--muted)}
 .odp-sort{display:grid;gap:6px;font-size:14px}
-.odp-sort select{font:inherit;color:inherit;background:white;border:1px solid #999;border-radius:0;min-height:44px;padding:8px 30px 8px 12px;cursor:pointer}
+.odp-sort select{font:inherit;color:inherit;background:var(--site-panel);border:1px solid var(--site-edge);border-radius:0;min-height:44px;padding:8px 30px 8px 12px;cursor:pointer}
 .odp .odp-reels-note{margin-top:28px;color:var(--muted);font-size:14px}
 .odp-tiles{margin:24px 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 28px}
 .odp-tile{min-width:0;display:flex;flex-direction:column}
@@ -204,8 +194,8 @@ const productStyles = `
 .odp .odp-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--edge);padding-top:12px;margin-top:auto}
 .odp-counts dt{font-size:12px;color:var(--muted)}
 .odp-counts dd{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
-.odp-button{font:inherit;cursor:pointer;padding:12px 18px;background:white;color:#080808;border:1px solid #999;min-height:46px}
-.odp-button:hover{background:#f3f3f3}
+.odp-button{font:inherit;cursor:pointer;padding:12px 18px;background:var(--site-panel);color:var(--site-ink);border:1px solid var(--site-edge);min-height:46px}
+.odp-button:hover{background:var(--site-soft)}
 .odp-textlink{display:inline-flex;align-items:center;min-height:44px;margin:10px 0;font-size:16px}
 .odp-more{margin-right:20px}
 
@@ -213,9 +203,6 @@ const productStyles = `
 }
 
 @media(max-width:850px){.odp-wrap{padding-inline:28px}
-.odp-header{padding-top:36px;padding-bottom:36px}
-.odp-brand{font-size:58px;letter-spacing:-3.5px}
-.odp-nav{font-size:16px;gap:22px}
 .odp-cover-brand{font-size:26px}
 .odp-intro{gap:36px;padding-bottom:66px}
 .odp h1{font-size:49px;letter-spacing:-2.4px}
@@ -231,9 +218,6 @@ const productStyles = `
 }
 
 @media(max-width:600px){.odp-wrap{padding-inline:22px}
-.odp-header{display:block;padding-top:30px;padding-bottom:28px}
-.odp-brand{font-size:clamp(42px,13vw,51px);letter-spacing:-3px}
-.odp-nav{margin-top:16px;gap:28px}
 .odp-hero-image{display:none}
 .odp-appstage{height:auto;padding-top:70px;padding-bottom:28px;display:flex;align-items:center;justify-content:center}
 .odp-mobile-screens{display:flex;gap:18px;justify-content:center;align-items:center;width:100%}
@@ -249,8 +233,6 @@ const productStyles = `
 .odp-garage img{height:215px}
 .odp h3{min-height:0;font-size:28px;margin:18px 0 12px}
 .odp-story-link{font-size:17px}
-.odp-footer{flex-direction:column;margin-top:48px;gap:12px}
-.odp-footer>div{text-align:left}
 .odp-reels{padding-top:15px}
 .odp-reels h1{font-size:48px}
 .odp-tiles{grid-template-columns:1fr;gap:36px}
@@ -262,4 +244,18 @@ const productStyles = `
 @media(prefers-reduced-motion:reduce){.odp-story-image img{transition:none}
 }
 
+.odp .odp-intro{display:block;max-width:720px;margin-inline:auto;padding-block:38px 64px}
+.odp .odp-description{font-size:18px;line-height:1.85;max-width:none}
+.odp .odp-wrap{max-width:1280px;padding-inline:40px}
+.odp .odp-stories-section h2{font-size:32px;font-weight:600;letter-spacing:-.035em}
+.odp .odp-stories h3{font-size:24px;letter-spacing:-.035em;font-weight:600}
+.odp .odp-reels{padding-top:0}
+.odp .odp-cover-brand{color:#765317}
+.odp .ods-article-header h1{font-size:clamp(34px,4.1vw,56px);letter-spacing:-.045em;line-height:1.18;font-weight:700;max-width:none}
+.odp .ods-related h2{font-size:30px;font-weight:600;letter-spacing:-.035em;margin-bottom:24px}
+.odp .ods-related h3{min-height:0;font-size:20px;margin:0 0 8px}
+.odp .ods-related p{font-size:14px;line-height:1.7}
+@media(max-width:650px){.odp .odp-wrap{padding-inline:22px}.odp .odp-intro{padding-block:28px 48px}.odp .odp-description{font-size:16px}.odp .odp-stories-section h2{font-size:28px}.odp .odp-stories h3{font-size:24px}}
+
+.odp .odp-intro-link,.odp .odp-story-link,.odp .odp-textlink,.odp .odp-source-note a{color:var(--site-link)}
 `

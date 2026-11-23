@@ -1,4 +1,5 @@
 import * as React from "react"
+import { SiteHeader, SiteFooter, ArticleHeader, ArticleCover, RelatedPages } from "./pages/SiteLayout"
 import { addPropertyControls, ControlType } from "framer"
 import { ProductPage, reelCount, type ShowcaseReel } from "./OpenDashProduct"
 
@@ -319,7 +320,7 @@ function CreatorCredits({ labels }: { labels: string }) {
 function RedditResponse() {
     return (
         <div className="odc-reddit" id="reddit-response">
-            <h3 className="odc-evidence-heading">Four posts, four stages of the project</h3>
+            <h2 className="odc-evidence-heading">Four posts, four stages of the project</h2>
             <p>My June 21 wallpaper reveal drew the most upvotes. Two days later, the full introduction reached more readers and generated the most shares. The video experiment brought a different response, with questions about what the display could do and my own note that maps were lagging. The July 8 update shifted the discussion toward the project’s future.</p>
             <figure className="odc-chart odc-reddit-chart">
                 <figcaption>Views reported by Reddit Post Insights</figcaption>
@@ -375,7 +376,7 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
     const maxViews = allViewCounts[0]
     return (
         <div className="odc-repost-archive" id="reel-analysis">
-            <h3 className="odc-evidence-heading">A launch burst, with questions months later</h3>
+            <h2 className="odc-evidence-heading">A launch burst, with questions months later</h2>
             <p>The full archive contains <strong>{showcaseReels.length} related Reels from {postingAccounts} posting accounts</strong>. Wallpaper customization led the two most-viewed clips. Later videos demonstrated screen-off navigation, responded to the public scope change, and explored rebuilding the removed dashboard feature.</p>
             <dl className="odc-stats" aria-label="All 48 Instagram Reels, November 16–21, 2026 snapshot">
                 <div><dt>Cumulative views, about</dt><dd>{formatMetric(totalReelViews, 2)}</dd></div>
@@ -409,7 +410,7 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
             </figure>
             <p>The top five clips contribute about <strong>{(allViewCounts.slice(0, 5).reduce((sum, value) => sum + value, 0) / totalReelViews * 100).toFixed(1)}%</strong> of the views. A typical Reel in this set sits much closer to the <strong>{formatMetric(medianReelViews)}</strong> median than to the million-view outliers. The spread documents both a few widely seen clips and many smaller demonstrations.</p>
             <p>The recorded counters also total about <strong>{formatMetric(totalReelLikes)} likes across {knownReelLikes.length} Reels</strong> and <strong>{formatMetric(totalReelComments)} comments across {knownReelComments.length} Reels</strong>. Missing counters remain unknown. These counts cannot establish app installs or successful setups.</p>
-            <h4 className="odc-evidence-heading">What people were asking</h4>
+            <h3 className="odc-evidence-heading">What people were asking</h3>
             <p>Of <strong>{sampledComments} visible comments sampled across {sampledReels} of the 48 Reels</strong>, <strong>171 ({(171 / sampledComments * 100).toFixed(1)}%)</strong> matched link, APK, or download terms, while <strong>12 ({(12 / sampledComments * 100).toFixed(1)}%)</strong> matched setup or connection terms. Keyword groups may overlap. This supports ongoing interest in finding the app; it does not measure satisfaction or conversion.</p>
             <p><strong>{novemberSampledReels} sampled Reels had a dated November comment</strong>, with the latest captured date on November 15. All 48 clips in this archive were published by July 16, so some discussion continued months after posting. Instagram’s comment ordering means a missing recent comment cannot establish that a Reel is inactive. A single cumulative snapshot cannot show view growth over time, impressions, or daily active riders.</p>
             <p>Thanks to the creators who filmed their dashboards, made tutorials, and answered questions. Every entry below links to its Reel and the credited creator profiles.</p>
@@ -450,7 +451,7 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
 
 function SearchInterest() {
     return (
-        <figure id="search-interest" className="odc-chart odc-trends" aria-labelledby="odc-trend-title">
+        <figure className="odc-chart odc-trends" aria-labelledby="odc-trend-title">
             <figcaption className="odc-trends-heading">
                 <div>
                     <strong id="odc-trend-title">Google search interest</strong>
@@ -501,12 +502,12 @@ function SearchInterest() {
  * @framerIntrinsicHeight 5400
  */
 function CommunityAnalysis({ siteRoot }: { siteRoot: string }) {
-    return (<section id="response" aria-labelledby="response-title">
-                            <h2 id="response-title">How riders responded</h2>
+    return (<div id="response">
                             <p>Screen-off navigation and pairing reliability kept coming up in public threads. The issue tracker also showed interest in app-only tools, including currencies, account setup, and offline routes with GPX import.</p>
-                            <SearchInterest />
+                            <section id="search-interest" aria-labelledby="search-interest-title"><h2 id="search-interest-title">Search interest</h2><SearchInterest /></section>
                             <RedditResponse />
-                            <h3 className="odc-evidence-heading" id="reels-title">Launch-week Reels</h3>
+                            <ReelTrendAnalysis siteRoot={siteRoot} />
+                            <details className="odc-trend-details"><summary>Launch-week examples and creator credits</summary>                            <h3 className="odc-evidence-heading" id="reels-title">Launch-week Reels</h3>
                             <div className="odc-reels" role="list" aria-labelledby="reels-title">
                                 {reels.map((reel) => (
                                     <article className="odc-reel" role="listitem" key={reel.href}>
@@ -519,8 +520,8 @@ function CommunityAnalysis({ siteRoot }: { siteRoot: string }) {
                             </div>
                             <p className="odc-caption">Post dates are in India Standard Time. Public counts were checked November 16–21, 2026. Instagram rounds larger totals.</p>
                             <SourceLink href={publicSources.instagram}>Browse the Open Dash Instagram profile</SourceLink>
-                            <ReelTrendAnalysis siteRoot={siteRoot} />
-                            <dl id="github-response" className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">
+</details>
+                            <section id="github-response" aria-labelledby="github-title"><h2 id="github-title">GitHub activity</h2><dl className="odc-stats" aria-label="GitHub snapshot on November 16, 2026">
                                 <div><dt>APK downloads</dt><dd>3,151</dd></div>
                                 <div><dt>Repository stars</dt><dd>82</dd></div>
                                 <div><dt>Reported forks</dt><dd>64</dd></div>
@@ -542,31 +543,26 @@ function CommunityAnalysis({ siteRoot }: { siteRoot: string }) {
                                 <SourceLink href={publicSources.forks}>GitHub fork dates</SourceLink>
                                 <SourceLink href={publicSources.trendsMethod}>Google Trends methodology</SourceLink>
                             </div>
-                        </section>)
+                        </section></div>)
 }
 
 function TrendsPage({ style, siteRoot }: { style?: React.CSSProperties; siteRoot: string }) {
     return <div className="odc" style={style}>
         <style>{styles}</style>
         <a className="odc-skip" href="#trends-main">Skip to trends</a>
-        <header className="odc-header" id="top"><div className="odc-wrap odc-header-inner">
-            <a className="odc-brand" href={siteRoot + "/"}>Open Dash.</a>
-            <nav className="odc-header-nav" aria-label="Main navigation">
-                <a className="odc-header-link" href={siteRoot + "/case-study/"}>The story</a>
-                <a className="odc-header-link" href={siteRoot + "/reels/"}>Rider showcase</a>
-                <a className="odc-header-link" href={siteRoot + "/trends/"} aria-current="page">Trends</a>
-            </nav>
-        </div></header>
-        <main id="trends-main" tabIndex={-1} className="odc-wrap odc-trends-page">
-            <h1>Trends and community.</h1>
+        <SiteHeader siteRoot={siteRoot} current="trends" />
+        <main id="trends-main" tabIndex={-1}>
+            <ArticleHeader title="Trends and community." metadata="Public response · November 16–21, 2026 snapshot" />
+            <div className="odc-trends-page ods-reading">
             <p className="odc-lead">Search interest, rider posts, and the public response to Open Dash. Each snapshot includes its date, sources, and limits.</p>
             <nav className="odc-trends-nav" aria-label="Trends sections">
                 <a href="#search-interest">Search interest</a><a href="#reddit-response">Reddit</a><a href="#reel-analysis">Instagram</a><a href="#github-response">GitHub</a>
             </nav>
             <article className="odc-story"><CommunityAnalysis siteRoot={siteRoot} /></article>
             <p className="odc-return"><SourceLink href={siteRoot + "/case-study/"}>Back to the case study</SourceLink></p>
+            </div><RelatedPages siteRoot={siteRoot} current="trends" />
         </main>
-        <footer className="odc-footer"><div className="odc-wrap odc-header-inner"><a href={siteRoot + "/"}>Open Dash</a><a href="#top">Back to top</a></div></footer>
+        <SiteFooter siteRoot={siteRoot} current="trends" />
     </div>
 }
 
@@ -579,39 +575,11 @@ export default function OpenDashLandingPage({ style, caseStudy = false, reelsPag
         <div className="odc" style={style}>
             <style>{styles}</style>
             <a className="odc-skip" href="#case-study">Skip to case study</a>
-            <header className="odc-header" id="top">
-                <div className="odc-wrap odc-header-inner">
-                    <a className="odc-brand" href={siteRoot + "/"}>
-                        Open Dash.
-                    </a>
-                    <nav className="odc-header-nav" aria-label="Main navigation">
-                        <a className="odc-header-link" href={siteRoot + "/"}>Home</a>
-                        <a className="odc-header-link" href={siteRoot + "/reels/"}>Rider showcase</a>
-                        <a className="odc-header-link" href={siteRoot + "/case-study/"} aria-current="page">Case study</a>
-                        <a className="odc-header-link" href={siteRoot + "/trends/"}>Trends</a>
-                    </nav>
-                </div>
-            </header>
+            <SiteHeader siteRoot={siteRoot} current="story" />
             <main id="case-study" tabIndex={-1}>
-                <div className="odc-wrap odc-hero">
-                    <div>
-                        <p className="odc-kicker">Open Dash case study · 2026</p>
-                        <h1>Building for the bike dash<span>.</span></h1>
-                        <p className="odc-lead">I built Open Dash around my Himalayan 450. A custom wallpaper and navigation with the phone screen off became a broader experiment in what the dashboard and companion app could do.</p>
-                        <a className="odc-primary" href="#versions">Explore the version timeline <span aria-hidden="true">↓</span></a>
-                    </div>
-                    <figure className="odc-hero-figure">
-                        <div className="odc-instrument">
-                            <span className="odc-instrument-label">Early prototype</span>
-                            <div className="odc-instrument-flow">
-                                <div><span>Android phone</span><strong>Render the ride view</strong></div>
-                                <span className="odc-flow-arrow" aria-hidden="true">↓</span>
-                                <div><span>Wi-Fi video stream</span><strong>Display it on the dash</strong></div>
-                            </div>
-                        </div>
-                        <figcaption>Schematic of the original projection path.</figcaption>
-                    </figure>
-                </div>
+                <ArticleHeader title="Building for the bike dash." metadata="Project history, 2026" />
+                <ArticleCover siteRoot={siteRoot} />
+                <div className="ods-reading odc-article-intro"><p className="odc-lead">I built Open Dash around my Himalayan 450. A custom wallpaper and navigation with the phone screen off became a broader experiment in what the dashboard and companion app could do.</p><a className="odc-primary" href="#versions">Explore the version timeline</a></div>
 
                 <div className="odc-wrap odc-layout">
                     <aside>
@@ -708,13 +676,9 @@ export default function OpenDashLandingPage({ style, caseStudy = false, reelsPag
                         </section>
                     </article>
                 </div>
+                <RelatedPages siteRoot={siteRoot} current="story" />
             </main>
-            <footer className="odc-footer">
-                <div className="odc-wrap odc-header-inner">
-                    <span>Open Dash</span>
-                    <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
-                </div>
-            </footer>
+            <SiteFooter siteRoot={siteRoot} current="story" />
         </div>
     )
 }
@@ -725,16 +689,16 @@ addPropertyControls(OpenDashLandingPage, {
 
 const styles = `
 .odc {
-    --base: #fff;
-    --panel: #fff;
-    --edge: #d4dcd4;
-    --ink: #101412;
-    --muted: #526054;
-    --gold: #35593d;
-    --teal: #2c695d;
+    --base: var(--site-bg);
+    --panel: var(--site-panel);
+    --edge: var(--site-edge);
+    --ink: var(--site-ink);
+    --muted: var(--site-muted);
+    --gold: var(--site-accent);
+    --teal: var(--site-link);
     background: var(--base);
     color: var(--ink);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--site-font);
     font-size: 17px;
     line-height: 1.65;
     position: relative;
@@ -752,16 +716,7 @@ const styles = `
 .odc p { margin: 0; }
 .odc h1, .odc h2, .odc h3 { margin: 0; text-wrap: balance; }
 .odc-wrap { width: min(1160px, 100%); margin-inline: auto; padding-inline: clamp(20px, 4vw, 40px); }
-.odc-footer { border-block-start: 1px solid var(--edge); }
-.odc-header-inner { min-height: 145px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 16px; padding-block: 8px; }
-.odc-header-nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 18px; }
-.odc-header-nav a { min-height: 44px; display: inline-flex; align-items: center; }
-.odc-header-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; }
 .odc-brand, .odc-header-link, .odc-footer a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; }
-.odc-brand { font-size:clamp(40px,6vw,72px);letter-spacing:-.06em;line-height:1.1;font-weight: 800; text-decoration: none; white-space: nowrap; flex: none; }
-.odc-mark { position: relative; width: 25px; height: 25px; border: 2px solid currentColor; border-radius: 50%; }
-.odc-mark::after { content: ""; position: absolute; width: 2px; height: 9px; left: 50%; top: 4px; background: currentColor; transform: rotate(44deg); transform-origin: bottom center; }
-.odc-header-link, .odc-footer a { color: var(--muted); font-size: .875rem; font-weight: 600; }
 .odc-skip { position: absolute; inset-block-start: 8px; inset-inline-start: 12px; z-index: 2; padding: 10px 14px; background: var(--panel); transform: translateY(-160%); }
 .odc-skip:focus { transform: translateY(0); }
 .odc-hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr); gap: clamp(28px, 6vw, 82px); align-items: center; padding-block: clamp(46px, 9vw, 118px); }
@@ -779,7 +734,7 @@ const styles = `
     padding: clamp(16px, 3vw, 30px);
 }
 .odc-instrument-flow { margin-block-start: 20px; display: grid; gap: 10px; }
-.odc-instrument-flow div { display: grid; gap: 3px; border: 1px solid var(--edge); border-radius: 9px; padding: 14px; background: #f6f8f3; }
+.odc-instrument-flow div { display: grid; gap: 3px; border: 1px solid var(--edge); border-radius: 9px; padding: 14px; background: var(--site-panel); }
 .odc-instrument-flow div span { font-size: .8125rem; color: var(--muted); }
 .odc-flow-arrow { color: var(--teal); line-height: 1; margin-inline-start: 14px; }
 .odc-hero-figure figcaption, .odc .odc-caption { margin-block-start: 10px; color: var(--muted); font-size: .8125rem; line-height: 1.5; }
@@ -819,9 +774,9 @@ const styles = `
 .odc-chart figcaption { font-weight: 700; }
 .odc-chart ul { display: grid; gap: 10px; list-style: none; margin: 14px 0 0; padding: 0; }
 .odc-chart li { display: grid; grid-template-columns: 3em minmax(0, 1fr) 2ch; gap: 10px; align-items: center; font-size: .875rem; font-variant-numeric: tabular-nums; }
-.odc-bar { height: 10px; background: #dce7d7; border-radius: 6px; }
+.odc-bar { height: 10px; background: var(--site-soft); border-radius: 6px; }
 .odc-bar span { display: block; height: 100%; background: var(--teal); border-radius: inherit; }
-.odc-trends { background: #f5f7f8; }
+.odc-trends { background: var(--site-panel); }
 .odc-trends-heading { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 14px; }
 .odc-trends-heading #odc-trend-title { font-size: 1.25rem; }
 .odc-trends-heading .odc-caption { margin-block-start: 3px; font-weight: 400; }
@@ -871,7 +826,7 @@ const styles = `
 .odc-reddit-table { border-collapse: collapse; width: 100%; font-size: .8125rem; text-align: left; font-variant-numeric: tabular-nums; }
 .odc-reddit-table caption { text-align: left; color: var(--muted); padding: 12px; }
 .odc-reddit-table th, .odc-reddit-table td { padding: 10px 12px; border-block-start: 1px solid var(--edge); }
-.odc-reddit-table thead th { background: #e7efe0; font-weight: 650; }
+.odc-reddit-table thead th { background: var(--site-soft); font-weight: 650; }
 .odc-reddit-table tbody th { min-width: 9rem; font-weight: 650; }
 .odc-reddit-table a { display: inline-flex; align-items: center; min-height: 44px; }
 .odc-repost-list { list-style: none; margin: 12px 0 0; padding: 0; }
@@ -882,7 +837,6 @@ const styles = `
 .odc-repost-list dt { color: var(--muted); font-size: .75rem; }
 .odc-repost-list dd { margin: 0; font-weight: 650; }
 .odc-story .odc-end { margin-block-end: 0; }
-.odc-footer { border-block-start: 1px solid var(--edge); border-block-end: 0; font-weight: 650; }
 @media (max-width: 740px) {
     .odc-reels { grid-template-columns: minmax(0, 1fr); }
     .odc-hero, .odc-layout { grid-template-columns: minmax(0, 1fr); }
@@ -899,4 +853,27 @@ const styles = `
     .odc-stats { gap: 6px; }
     .odc-stats div { padding-inline: 4px; }
 }
+
+.odc .odc-layout{display:block;max-width:800px;padding-inline:40px;padding-block:24px 48px}
+.odc .odc-nav{position:static;border-block:1px solid var(--site-edge);padding-block:12px;margin-bottom:44px}
+.odc .odc-nav ul{display:flex;flex-wrap:wrap;gap:2px 22px}
+.odc .odc-nav a{font-size:13px}
+.odc .odc-article-intro{padding-top:4px}
+.odc .odc-lead{max-width:none;font-size:17px;line-height:1.85;color:var(--site-muted)}
+.odc .odc-story h2{font-size:30px;line-height:1.3;letter-spacing:-.035em;font-weight:600;margin-block:40px 18px}
+.odc .odc-story h3{font-size:23px;line-height:1.4;font-weight:600}
+.odc .odc-story h4{font-size:17px;font-weight:600}
+.odc .odc-story p{font-size:16px;line-height:1.85;max-width:none}
+.odc .odc-story .odc-caption,.odc .odc-reel p{font-size:12px;line-height:1.7}
+.odc .odc-chart{background:var(--site-panel);border-radius:4px}
+.odc .odc-reels{grid-template-columns:1fr}
+.odc .odc-reel{border-radius:4px}
+.odc .odc-trends-page{max-width:800px;padding-block:0 48px}
+.odc .ods-article-header h1{font-size:clamp(34px,4.1vw,56px);line-height:1.18;letter-spacing:-.045em;font-weight:700;margin:0 0 16px}
+.odc .ods-related h2{font-size:30px;line-height:1.25;letter-spacing:-.035em;font-weight:600}
+.odc .ods-related h3{font-size:20px;font-weight:600}
+@media(max-width:650px){.odc .odc-layout{padding-inline:22px}.odc .odc-story h2{font-size:26px}.odc .odc-story h3{font-size:21px}.odc .odc-lead{font-size:16px}}
+
+.odc a.odc-primary{background:var(--site-accent);color:var(--site-bg)}
+.odc .odc-source,.odc .odc-nav a,.odc .odc-trends-nav a,.odc .odc-return a,.odc .odc-repost-credit a{color:var(--site-link)}
 `

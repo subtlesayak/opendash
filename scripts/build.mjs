@@ -55,11 +55,13 @@ const pages = [
 for (const page of pages) {
     const url = origin + siteRoot + "/" + page.path
     const html = `<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="hanle">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#10100f">
+<script src="${siteRoot}/theme-init.js"></script>
+<link rel="stylesheet" href="${siteRoot}/styles/site.css">
 <title>${page.title}</title>
 <meta name="description" content="${page.description}">
 <link rel="canonical" href="${url}">
@@ -67,8 +69,8 @@ for (const page of pages) {
 <meta property="og:title" content="${page.title}">
 <meta property="og:description" content="${page.description}">
 <meta property="og:url" content="${url}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23f6f8f3' stroke='%2315241a' stroke-width='2'/%3E%3Cpath d='m16 16 6-7' stroke='%2315241a' stroke-width='2'/%3E%3C/svg%3E">
-<style>html{scroll-behavior:smooth}body{margin:0;background:#ffffff}button,select{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%2310100f' stroke='%23d9ad58' stroke-width='2'/%3E%3Cpath d='m16 16 6-7' stroke='%23d9ad58' stroke-width='2'/%3E%3C/svg%3E">
+<style>html{scroll-behavior:smooth}body{margin:0;background:var(--site-bg,#10100f)}button,select{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
 </head>
 <body>
 <div id="root" data-page="${page.trendsPage ? "trends" : page.caseStudy ? "case-study" : page.reelsPage ? "reels" : "product"}">${render(page.caseStudy, page.reelsPage ?? false, page.trendsPage ?? false)}</div>
@@ -81,4 +83,4 @@ for (const page of pages) {
 await writeFile("dist/.nojekyll", "")
 await writeFile("dist/sitemap.xml", `<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map((page) => `<url><loc>${origin}${siteRoot}/${page.path}</loc></url>`).join("")}</urlset>`)
-console.log("Built the editorial homepage, rider showcase and case study for /opendash/.")
+console.log("Built the homepage, story, rider showcase and Trends with shared themes for /opendash/.")

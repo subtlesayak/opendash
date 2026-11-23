@@ -30,3 +30,9 @@ Instagram counts were checked November 16–21, 2026. Reddit Post Insights are a
 The Reel analysis uses all 48 distinct related clips: 46 from Reposts and two launch clips outside that grid. The source rows, counter coverage, comment sample scope, and creator credits are available in `public/data/reels.json`. The check command reconciles the source rows and thumbnail attributions and independently recalculates the headline metrics. Posting-date charts describe when clips were published; the available cumulative counters do not provide daily view growth or impressions.
 
 The standalone editorial proposal remains local under `previews/editorial/`; it is not part of the deployed build.
+
+## Shared design and themes
+
+All four pages use the same header, footer, page links and related-page navigation from `pages/SiteLayout.tsx`. The default Hanle Black theme combines warm charcoal with gold accents; Light and Dark alternatives use the same content and layout. The theme choice is saved locally in the browser and applied before the page paints. Poppins fonts are hosted with the site under `public/fonts/`, alongside their license.
+
+Trends uses Search, Reddit, Instagram and GitHub topic sections. Detailed launch examples remain available in a disclosure, and the rider showcase loads nine clips at a time.

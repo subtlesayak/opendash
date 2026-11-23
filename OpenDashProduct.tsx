@@ -1,4 +1,5 @@
 import * as React from "react"
+import { RideInfographic } from "./pages/RideInfographic"
 import { SiteHeader, SiteFooter, ArticleHeader, RelatedPages } from "./pages/SiteLayout"
 
 export type ShowcaseReel = {
@@ -116,11 +117,12 @@ export function ProductPage({ style, entries, repository, release, siteRoot = ""
         <a className="odp-skip" href="#product-main">Skip to content</a>
         <SiteHeader siteRoot={siteRoot} current={reelsPage ? "reels" : "home"} />
         <main id="product-main" tabIndex={-1}>
-            {reelsPage ? <><ArticleHeader title="Seen on the road." metadata="Rider archive · June–July 2026" id="odp-reels-title" /><ReelShowcase entries={entries} siteRoot={siteRoot} /></> : <><ArticleHeader title="A new view of your ride." metadata="An open-source Android motorcycle project" /><div className="odp-wrap">
+            {reelsPage ? <><ArticleHeader title="Seen on the road." metadata="Rider archive · June–July 2026" id="odp-reels-title" /><ReelShowcase entries={entries} siteRoot={siteRoot} /></> : <><ArticleHeader title="A new view of your ride." metadata="An open-source Android ride companion" action={{ label: "Download for Android", href: release }} /><div className="odp-wrap">
                 <AppPreview siteRoot={siteRoot} />
                 <section className="odp-intro" aria-label="About Open Dash">
-                    <div><p className="odp-description">Route previews, ride history, and a garage for your motorcycles. An open-source Android project, built around the ride.</p><a className="odp-intro-link" href={release}>Download for Android</a><p className="odp-install-note">Opens the GitHub release. Choose the APK under Assets and review the release notes before installing.</p></div>
+                    <div><p className="odp-description">Route previews, ride history, and a garage for your motorcycles. An open-source Android project, built around the ride.</p><p className="odp-install-note">Opens the GitHub release. Choose the APK under Assets and review the release notes before installing.</p></div>
                 </section>
+                <RideInfographic />
                 <section className="odp-stories-section" aria-labelledby="odp-inside-title"><h2 id="odp-inside-title">Inside Open Dash</h2>
                     <div className="odp-stories">
                         <article><a className="odp-story-image odp-dash" href={caseStudy} tabIndex={-1} aria-hidden="true"><img src={mediaUrl(siteRoot, "reels/DZ-TzFHz_HR.jpg")} alt="" width={361} height={640} loading="lazy" /></a>

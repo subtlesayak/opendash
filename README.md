@@ -36,3 +36,5 @@ The standalone editorial proposal remains local under `previews/editorial/`; it 
 All four pages use the same header, footer, page links and related-page navigation from `pages/SiteLayout.tsx`. The default Hanle Black theme combines warm charcoal with gold accents; Light and Dark alternatives use the same content and layout. The theme choice is saved locally in the browser and applied before the page paints. Poppins fonts are hosted with the site under `public/fonts/`, alongside their license.
 
 Trends uses Search, Reddit, Instagram and GitHub topic sections. Detailed launch examples remain available in a disclosure, and the rider showcase loads nine clips at a time.
+
+The header theme icon cycles Hanle Black → Light → Dark, with a tooltip and accessible name for the current and next theme. The homepage ride infographic describes the existing route-preview, ride-history and garage features. Trends overview numbers and proportional graphics are calculated from the same dated archive as the detailed analysis; cumulative views are not presented as installs or unique riders.

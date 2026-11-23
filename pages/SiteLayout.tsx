@@ -2,6 +2,8 @@ import * as React from "react"
 
 export type SitePage = "home" | "story" | "reels" | "trends"
 type Theme = "hanle" | "light" | "dark"
+const themeNames: Record<Theme, string> = { hanle: "Hanle Black", light: "Light", dark: "Dark" }
+const themeOrder: Theme[] = ["hanle", "light", "dark"]
 const pages: { id: SitePage; label: string; path: string; description: string }[] = [
     { id: "home", label: "Home", path: "/", description: "The Open Dash Android project." },
     { id: "story", label: "The story", path: "/case-study/", description: "The build, the testing, and the change in direction." },
@@ -19,6 +21,7 @@ function applyTheme(value: Theme) {
 
 export function SiteHeader({ siteRoot, current }: { siteRoot: string; current: SitePage }) {
     const [theme, setTheme] = React.useState<Theme>("hanle")
+    const nextTheme = themeOrder[(themeOrder.indexOf(theme) + 1) % themeOrder.length]
     React.useEffect(() => {
         setTheme(validTheme(document.documentElement.dataset.theme))
         const syncTheme = (event: StorageEvent) => {
@@ -34,18 +37,20 @@ export function SiteHeader({ siteRoot, current }: { siteRoot: string; current: S
         <a className="ods-brand" href={siteRoot + "/"} aria-label="Open Dash home" aria-current={current === "home" ? "page" : undefined}>Open Dash.</a>
         <div className="ods-header-controls">
             <nav className="ods-nav" aria-label="Main navigation">{pages.filter(page => page.id !== "home").map(page => <a key={page.id} href={siteRoot + page.path} aria-current={current === page.id ? "page" : undefined}>{page.label}</a>)}</nav>
-            <label className="ods-theme">Theme<select value={theme} onChange={event => {
-                const next = validTheme(event.target.value)
+            <button className="ods-theme-button" type="button" title={`Theme: ${themeNames[theme]}. Switch to ${themeNames[nextTheme]}`} aria-label={`Theme: ${themeNames[theme]}. Switch to ${themeNames[nextTheme]}`} onClick={() => {
+                const next = nextTheme
                 setTheme(next)
                 applyTheme(next)
                 try { window.localStorage.setItem("opendash-theme", next) } catch { /* Theme still works when storage is unavailable. */ }
-            }}><option value="hanle">Hanle Black</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+            }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {theme === "light" ? <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></> : theme === "dark" ? <path d="M20.5 14a9 9 0 0 1-10.5-10.5A9 9 0 1 0 20.5 14Z" /> : <><circle cx="12" cy="12" r="9" /><path d="m5 16 5-7 4 6 2-3 3 4M10 9l1 4 2-1" /></>}
+            </svg></button><span className="ods-sr-only" aria-live="polite">{themeNames[theme]} theme</span>
         </div>
     </header>
 }
 
-export function ArticleHeader({ title, metadata, id }: { title: string; metadata: string; id?: string }) {
-    return <div className="ods-article-header ods-wrap"><h1 id={id}>{title}</h1><p className="ods-metadata">Open Dash project · {metadata}</p></div>
+export function ArticleHeader({ title, metadata, id, action }: { title: string; metadata: string; id?: string; action?: { label: string; href: string } }) {
+    return <div className="ods-article-header ods-wrap"><h1 id={id}>{title}</h1><p className="ods-metadata">Open Dash project · {metadata}</p>{action && <a className="ods-primary-action" href={action.href}>{action.label}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></a>}</div>
 }
 
 export function ArticleCover({ siteRoot }: { siteRoot: string }) {

@@ -393,8 +393,9 @@ function ReelTrendAnalysis({ siteRoot }: { siteRoot: string }) {
             </figure>
             <figure className="odc-chart odc-view-share">
                 <figcaption>Two Reels account for most of the views</figcaption>
+                <div className="ods-share-bar" aria-hidden="true">{viewGroups.map((group) => <span key={group.label} style={{ width: group.count / totalReelViews * 100 + "%" }} />)}</div>
                 <ul>{viewGroups.map(({ label, count }) => (
-                    <li key={label}><span>{label}<small>About {formatMetric(count, 2)} views</small></span><span className="odc-bar" aria-hidden="true"><span style={{ width: count / totalReelViews * 100 + "%" }} /></span><strong>{(count / totalReelViews * 100).toFixed(1)}%</strong></li>
+                    <li key={label}><span>{label}<small>About {formatMetric(count, 2)} views</small></span><strong>{(count / totalReelViews * 100).toFixed(1)}%</strong></li>
                 ))}</ul>
                 <p className="odc-caption">Share of cumulative views across all 48 Reels, on a 0–100% scale. The top two are the wallpaper clips by @thulasiram.basha and @thegrrlife.</p>
             </figure>
@@ -546,6 +547,14 @@ function CommunityAnalysis({ siteRoot }: { siteRoot: string }) {
                         </section></div>)
 }
 
+function ArchiveOverview() {
+    return <section className="ods-archive-overview" aria-labelledby="ods-archive-title">
+        <h2 id="ods-archive-title">A small app. A big conversation.</h2>
+        <dl><div><dt>Cumulative Reel views, about</dt><dd>{formatMetric(totalReelViews, 2)}</dd></div><div><dt>Rider videos</dt><dd>{showcaseReels.length}</dd></div><div><dt>Posting accounts</dt><dd>{postingAccounts}</dd></div></dl>
+        <p>Curated archive · November 16–21, 2026 snapshot. Rounded counters include repeat plays and overlapping audiences; these are not unique riders or installs.</p>
+    </section>
+}
+
 function TrendsPage({ style, siteRoot }: { style?: React.CSSProperties; siteRoot: string }) {
     return <div className="odc" style={style}>
         <style>{styles}</style>
@@ -558,6 +567,7 @@ function TrendsPage({ style, siteRoot }: { style?: React.CSSProperties; siteRoot
             <nav className="odc-trends-nav" aria-label="Trends sections">
                 <a href="#search-interest">Search interest</a><a href="#reddit-response">Reddit</a><a href="#reel-analysis">Instagram</a><a href="#github-response">GitHub</a>
             </nav>
+            <ArchiveOverview />
             <article className="odc-story"><CommunityAnalysis siteRoot={siteRoot} /></article>
             <p className="odc-return"><SourceLink href={siteRoot + "/case-study/"}>Back to the case study</SourceLink></p>
             </div><RelatedPages siteRoot={siteRoot} current="trends" />
